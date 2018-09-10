@@ -70,7 +70,7 @@ static void fs_ctx_init(fs_ctx *_ctx, int _w, int _h, int _nlevels) {
     lw = (lw + 1) >> 1;
     lh = (lh + 1) >> 1;
   }
-  data = (unsigned char *)malloc(data_size);
+  data = (unsigned char *)calloc(1, data_size);
   _ctx->level = (fs_level *)data;
   _ctx->nlevels = _nlevels;
   data += _nlevels * sizeof(*_ctx->level);
