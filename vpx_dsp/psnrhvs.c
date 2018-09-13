@@ -18,6 +18,7 @@
 #include "./vpx_config.h"
 #include "./vpx_dsp_rtcd.h"
 #include "vpx_dsp/ssim.h"
+#include "vpx_ports/mem.h"
 #include "vpx_ports/system_state.h"
 #include "vpx_dsp/psnr.h"
 
@@ -126,8 +127,10 @@ static double calc_psnrhvs(const unsigned char *src, int _systride,
   const uint8_t *_dst8 = dst;
   const uint16_t *_src16 = CONVERT_TO_SHORTPTR(src);
   const uint16_t *_dst16 = CONVERT_TO_SHORTPTR(dst);
-  int16_t dct_s[8 * 8], dct_d[8 * 8];
-  tran_low_t dct_s_coef[8 * 8], dct_d_coef[8 * 8];
+  DECLARE_ALIGNED(16, int16_t, dct_s[8 * 8]);
+  DECLARE_ALIGNED(16, int16_t, dct_d[8 * 8]);
+  DECLARE_ALIGNED(16, tran_low_t, dct_s_coef[8 * 8]);
+  DECLARE_ALIGNED(16, tran_low_t, dct_d_coef[8 * 8]);
   double mask[8][8];
   int pixels;
   int x;
