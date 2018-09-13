@@ -11,6 +11,7 @@
 #ifndef VPX_PORTS_MEM_H_
 #define VPX_PORTS_MEM_H_
 
+#include <string.h>
 #include "vpx_config.h"
 #include "vpx/vpx_integer.h"
 
@@ -22,6 +23,19 @@
 #warning No alignment directives known for this compiler.
 #define DECLARE_ALIGNED(n, typ, val) typ val
 #endif
+
+/* Use for unaligned load/stores that get flagged by the sanitizer.
+ * All modern compilers compile this into simple moves.
+ */
+static inline void vpx_store_unaligned_uint32(void* dst, uint32_t v) {
+    memcpy(dst, &v, sizeof(v));
+}
+
+static inline uint32_t vpx_load_unaligned_uint32(const void* src) {
+    uint32_t v;
+    memcpy(&v, src, sizeof(v));
+    return v;
+}
 
 /* Indicates that the usage of the specified variable has been audited to assure
  * that it's safe to use uninitialized. Silences 'may be used uninitialized'

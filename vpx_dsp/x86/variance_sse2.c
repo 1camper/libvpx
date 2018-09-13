@@ -36,8 +36,8 @@ unsigned int vpx_get_mb_ss_sse2(const int16_t *src) {
 
 #define READ64(p, stride, i)                                  \
   _mm_unpacklo_epi8(                                          \
-      _mm_cvtsi32_si128(*(const uint32_t *)(p + i * stride)), \
-      _mm_cvtsi32_si128(*(const uint32_t *)(p + (i + 1) * stride)))
+      _mm_cvtsi32_si128(vpx_load_unaligned_uint32(p + i * stride)), \
+      _mm_cvtsi32_si128(vpx_load_unaligned_uint32(p + (i + 1) * stride)))
 
 static void get4x4var_sse2(const uint8_t *src, int src_stride,
                            const uint8_t *ref, int ref_stride,
