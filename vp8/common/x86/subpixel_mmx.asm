@@ -38,7 +38,7 @@ sym(vp8_filter_block1d_h6_mmx):
     push        rdi
     ; end prolog
 
-        mov         rdx,    arg(6) ;vp8_filter
+        mov         rdxp,   arg(6) ;vp8_filter
 
         movq        mm1,    [rdx + 16]             ; do both the negative taps first!!!
         movq        mm2,    [rdx + 32]         ;
@@ -137,7 +137,7 @@ sym(vp8_filter_block1dc_v6_mmx):
 
         movq      mm5, [GLOBAL(rd)]
         push        rbx
-        mov         rbx, arg(7) ;vp8_filter
+        mov         rbxp, arg(7) ;vp8_filter
         movq      mm1, [rbx + 16]             ; do both the negative taps first!!!
         movq      mm2, [rbx + 32]         ;
         movq      mm6, [rbx + 48]        ;

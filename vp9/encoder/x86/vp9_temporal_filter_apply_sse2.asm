@@ -61,8 +61,8 @@ sym(vp9_temporal_filter_apply_sse2):
 
         mov         rsi,            arg(0) ; src/frame1
         mov         rdx,            arg(2) ; predictor frame
-        mov         rdi,            arg(7) ; accumulator
-        mov         rax,            arg(8) ; count
+        mov         rdip,           arg(7) ; accumulator
+        mov         raxp,           arg(8) ; count
 
         ; dup the filter weight and store for later
         movd        xmm0,           arg(6) ; filter_weight

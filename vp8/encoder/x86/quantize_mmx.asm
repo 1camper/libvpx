@@ -43,7 +43,7 @@ sym(vp8_fast_quantize_b_impl_mmx):
         pandn           mm1,        mm2
         movq            mm3,        mm1
 
-        mov             rdx,        arg(6) ;quant_ptr
+        mov             rdxp,       arg(6) ;quant_ptr
         movq            mm1,        [rdx]
 
         mov             rcx,        arg(5) ;round_ptr
@@ -64,7 +64,7 @@ sym(vp8_fast_quantize_b_impl_mmx):
         movq            mm2,        [rax]
 
         pmullw          mm3,        mm2
-        mov             rax,        arg(7) ;dqcoeff_ptr
+        mov             raxp,       arg(7) ;dqcoeff_ptr
 
         movq            [rax],      mm3
 
@@ -104,7 +104,7 @@ sym(vp8_fast_quantize_b_impl_mmx):
         movq            mm6,        [rax+8]
 
         pmullw          mm7,        mm6
-        mov             rax,        arg(7) ;dqcoeff_ptr
+        mov             raxp,       arg(7) ;dqcoeff_ptr
 
         movq            [rax+8],    mm7
 
@@ -145,7 +145,7 @@ sym(vp8_fast_quantize_b_impl_mmx):
         movq            mm6,        [rax+16]
 
         pmullw          mm7,        mm6
-        mov             rax,        arg(7) ;dqcoeff_ptr
+        mov             raxp,       arg(7) ;dqcoeff_ptr
 
         movq            [rax+16],   mm7
 
@@ -186,7 +186,7 @@ sym(vp8_fast_quantize_b_impl_mmx):
         movq            mm6,        [rax+24]
 
         pmullw          mm7,        mm6
-        mov             rax,        arg(7) ;dqcoeff_ptr
+        mov             raxp,       arg(7) ;dqcoeff_ptr
 
         movq            [rax+24],   mm7
 
