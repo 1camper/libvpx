@@ -17,6 +17,7 @@
 #include "./vpx_config.h"
 #include "./vpx_dsp_rtcd.h"
 #include "vpx_dsp/ssim.h"
+#include "vpx_ports/mem.h"
 #include "vpx_ports/system_state.h"
 
 #if !defined(M_PI)
@@ -94,8 +95,10 @@ static double calc_psnrhvs(const unsigned char *_src, int _systride,
                            double _par, int _w, int _h, int _step,
                            const float _csf[8][8]) {
   float ret;
-  int16_t dct_s[8 * 8], dct_d[8 * 8];
-  tran_low_t dct_s_coef[8 * 8], dct_d_coef[8 * 8];
+  DECLARE_ALIGNED(16, int16_t, dct_s[8 * 8]);
+  DECLARE_ALIGNED(16, int16_t, dct_d[8 * 8]);
+  DECLARE_ALIGNED(16, tran_low_t, dct_s_coef[8 * 8]);
+  DECLARE_ALIGNED(16, tran_low_t, dct_d_coef[8 * 8]);
   float mask[8][8];
   int pixels;
   int x;
