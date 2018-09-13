@@ -13,6 +13,14 @@
 #include "./vpx_dsp_rtcd.h"
 #include "vpx_ports/mem.h"
 
+/* Unaligned loads through _mm_loadl_epi64 get flagged by the sanitizer  */
+static inline __m128i _mm_loadu_epi64(const __m128i *p) {
+  __m64 v;
+  memcpy(&v, p, sizeof(v));
+  return _mm_set_epi64((__m64)0LL, v);
+}
+#define _mm_loadl_epi64 _mm_loadu_epi64
+
 void vpx_minmax_8x8_sse2(const uint8_t *s, int p, const uint8_t *d, int dp,
                          int *min, int *max) {
   __m128i u0, s0, d0, diff, maxabsdiff, minabsdiff, negdiff, absdiff0, absdiff;
