@@ -44,7 +44,7 @@ sym(vp8_filter_block1d8_h6_sse2):
     push        rdi
     ; end prolog
 
-        mov         rdx,        arg(6) ;vp8_filter
+        mov         rdxp,       arg(6) ;vp8_filter
         mov         rsi,        arg(0) ;src_ptr
 
         mov         rdi,        arg(1) ;output_ptr
@@ -164,7 +164,7 @@ sym(vp8_filter_block1d16_h6_sse2):
     push        rdi
     ; end prolog
 
-        mov         rdx,        arg(6) ;vp8_filter
+        mov         rdxp,       arg(6) ;vp8_filter
         mov         rsi,        arg(0) ;src_ptr
 
         mov         rdi,        arg(1) ;output_ptr
@@ -340,7 +340,7 @@ sym(vp8_filter_block1d8_v6_sse2):
     push        rdi
     ; end prolog
 
-        mov         rax,        arg(7) ;vp8_filter
+        mov         raxp,       arg(7) ;vp8_filter
         movsxd      rdx,        dword ptr arg(3) ;pixels_per_line
 
         mov         rdi,        arg(1) ;output_ptr
@@ -435,7 +435,7 @@ sym(vp8_filter_block1d16_v6_sse2):
     push        rdi
     ; end prolog
 
-        mov         rax,        arg(7) ;vp8_filter
+        mov         raxp,       arg(7) ;vp8_filter
         movsxd      rdx,        dword ptr arg(3) ;pixels_per_line
 
         mov         rdi,        arg(1) ;output_ptr

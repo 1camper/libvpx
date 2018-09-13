@@ -119,11 +119,11 @@ sym(vpx_ssim_parms_16x16_sse2):
     movd            [rdi], xmm15;
     mov             rdi,arg(5)
     movd            [rdi], xmm14;
-    mov             rdi,arg(6)
+    mov             rdip,arg(6)
     movd            [rdi], xmm13;
-    mov             rdi,arg(7)
+    mov             rdip,arg(7)
     movd            [rdi], xmm12;
-    mov             rdi,arg(8)
+    mov             rdip,arg(8)
     movd            [rdi], xmm11;
 
     ; begin epilog
@@ -200,11 +200,11 @@ sym(vpx_ssim_parms_8x8_sse2):
     movd            [rdi], xmm15;
     mov             rdi,arg(5)
     movd            [rdi], xmm14;
-    mov             rdi,arg(6)
+    mov             rdip,arg(6)
     movd            [rdi], xmm13;
-    mov             rdi,arg(7)
+    mov             rdip,arg(7)
     movd            [rdi], xmm12;
-    mov             rdi,arg(8)
+    mov             rdip,arg(8)
     movd            [rdi], xmm11;
 
     ; begin epilog

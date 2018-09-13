@@ -535,8 +535,8 @@ sym(vpx_filter_block2d_bil4x4_var_mmx):
         psrlq           mm4,            32                  ;
         paddd           mm4,            mm7                 ;
 
-        mov             rdi,            arg(6) ;sum
-        mov             rsi,            arg(7) ;sumsquared
+        mov             rdip,           arg(6) ;sum
+        mov             rsip,           arg(7) ;sumsquared
 
         movd            dword ptr [rdi],          mm2                 ;
         movd            dword ptr [rsi],          mm4                 ;
@@ -577,7 +577,7 @@ sym(vpx_filter_block2d_bil_var_mmx):
         pxor            mm7,            mm7                 ;
         mov             rax,            arg(5) ;HFilter             ;
 
-        mov             rdx,            arg(6) ;VFilter             ;
+        mov             rdxp,           arg(6) ;VFilter             ;
         mov             rsi,            arg(0) ;ref_ptr              ;
 
         mov             rdi,            arg(2) ;src_ptr              ;
@@ -722,8 +722,8 @@ sym(vpx_filter_block2d_bil_var_mmx):
         psrlq           mm4,            32                  ;
         paddd           mm4,            mm7                 ;
 
-        mov             rdi,            arg(7) ;sum
-        mov             rsi,            arg(8) ;sumsquared
+        mov             rdip,           arg(7) ;sum
+        mov             rsip,           arg(8) ;sumsquared
 
         movd            dword ptr [rdi],          mm2                 ;
         movd            dword ptr [rsi],          mm4                 ;

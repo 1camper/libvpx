@@ -108,7 +108,7 @@ vpx_half_horiz_vert_variance16x_h_1:
         paddd       xmm0,           xmm1
 
         mov         rsi,            arg(5) ;[Sum]
-        mov         rdi,            arg(6) ;[SSE]
+        mov         rdip,           arg(6) ;[SSE]
 
         movd        [rsi],       xmm0
         movd        [rdi],       xmm6
@@ -213,7 +213,7 @@ vpx_half_vert_variance16x_h_1:
         paddd       xmm0,           xmm1
 
         mov         rsi,            arg(5) ;[Sum]
-        mov         rdi,            arg(6) ;[SSE]
+        mov         rdip,           arg(6) ;[SSE]
 
         movd        [rsi],       xmm0
         movd        [rdi],       xmm6
@@ -315,7 +315,7 @@ vpx_half_horiz_variance16x_h_1:
         paddd       xmm0,           xmm1
 
         mov         rsi,            arg(5) ;[Sum]
-        mov         rdi,            arg(6) ;[SSE]
+        mov         rdip,           arg(6) ;[SSE]
 
         movd        [rsi],       xmm0
         movd        [rdi],       xmm6
