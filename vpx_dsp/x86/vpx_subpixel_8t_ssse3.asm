@@ -76,7 +76,8 @@ SECTION .text
 
 %macro SUBPIX_HFILTER4 1
 cglobal filter_block1d4_%1, 6, 6, 11, LOCAL_VARS_SIZE_H4, \
-                            src, sstride, dst, dstride, height, filter
+                            "p", src, "p-", sstride, "p", dst, "p-", dstride, \
+                            "d", height, "p", filter
     mova                m4, [filterq]
     packsswb            m4, m4
 %if ARCH_X86_64
@@ -188,7 +189,8 @@ cglobal filter_block1d4_%1, 6, 6, 11, LOCAL_VARS_SIZE_H4, \
 ;-------------------------------------------------------------------------------
 %macro SUBPIX_HFILTER8 1
 cglobal filter_block1d8_%1, 6, 6, 14, LOCAL_VARS_SIZE, \
-                            src, sstride, dst, dstride, height, filter
+                            "p", src, "p-", sstride, "p", dst, "p-", dstride, \
+                            "d", height, "p", filter
     mova                 m4, [filterq]
     SETUP_LOCAL_VARS
     dec             heightd
@@ -279,7 +281,8 @@ cglobal filter_block1d8_%1, 6, 6, 14, LOCAL_VARS_SIZE, \
 ;-------------------------------------------------------------------------------
 %macro SUBPIX_HFILTER16 1
 cglobal filter_block1d16_%1, 6, 6, 14, LOCAL_VARS_SIZE, \
-                             src, sstride, dst, dstride, height, filter
+                             "p", src, "p-", sstride, "p", dst, "p-", dstride, \
+                             "d", height, "p", filter
     mova          m4, [filterq]
     SETUP_LOCAL_VARS
 
@@ -347,7 +350,8 @@ SUBPIX_HFILTER4  h8_avg  ; vpx_filter_block1d4_h8_avg_ssse3
 
 %macro SUBPIX_VFILTER 2
 cglobal filter_block1d%2_%1, 6, NUM_GENERAL_REG_USED, 15, LOCAL_VARS_SIZE, \
-                             src, sstride, dst, dstride, height, filter
+                             "p", src, "p-", sstride, "p", dst, "p-", dstride, \
+                             "d", height, "p", filter
     mova          m4, [filterq]
     SETUP_LOCAL_VARS
 
@@ -577,7 +581,8 @@ cglobal filter_block1d%2_%1, 6, NUM_GENERAL_REG_USED, 15, LOCAL_VARS_SIZE, \
 ;-------------------------------------------------------------------------------
 %macro SUBPIX_VFILTER16 1
 cglobal filter_block1d16_%1, 6, NUM_GENERAL_REG_USED, 16, LOCAL_VARS_SIZE, \
-                             src, sstride, dst, dstride, height, filter
+                             "p", src, "p-", sstride, "p", dst, "p-", dstride, \
+                             "d", height, "p", filter
     mova                     m4, [filterq]
     SETUP_LOCAL_VARS
 
