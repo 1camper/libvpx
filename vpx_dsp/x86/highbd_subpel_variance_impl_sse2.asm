@@ -121,8 +121,7 @@ SECTION .text
 
       ; Store bilin_filter and pw_8 location in stack
       %if GET_GOT_DEFINED == 1
-        GET_GOT eax
-        add esp, 4                ; restore esp
+        GET_GOT_NO_SAVE eax
       %endif
 
       lea ecx, [GLOBAL(bilin_filter_m)]
@@ -144,8 +143,7 @@ SECTION .text
 
       ; Store bilin_filter and pw_8 location in stack
       %if GET_GOT_DEFINED == 1
-        GET_GOT eax
-        add esp, 4                ; restore esp
+        GET_GOT_NO_SAVE eax
       %endif
 
       lea ecx, [GLOBAL(bilin_filter_m)]
