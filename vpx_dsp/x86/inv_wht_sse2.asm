@@ -81,7 +81,7 @@ SECTION .text
 %endmacro
 
 INIT_XMM sse2
-cglobal iwht4x4_16_add, 3, 3, 7, input, output, stride
+cglobal iwht4x4_16_add, 3, 3, 7, "p", input, "p", output, "d-", stride
 %if CONFIG_VP9_HIGHBITDEPTH
   mova            m0,        [inputq +  0]
   packssdw        m0,        [inputq + 16]

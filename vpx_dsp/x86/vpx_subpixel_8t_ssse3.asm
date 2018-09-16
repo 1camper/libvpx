@@ -97,7 +97,8 @@ SECTION .text
 ;-------------------------------------------------------------------------------
 %macro SUBPIX_HFILTER4 1
 cglobal filter_block1d4_%1, 6, 6+(ARCH_X86_64*2), 11, LOCAL_VARS_SIZE, \
-                            src, sstride, dst, dstride, height, filter
+                            "p", src, "p-", sstride, "p", dst, "p-", dstride, \
+                            "d", height, "p", filter
     mova                m4, [filterq]
     packsswb            m4, m4
 %if ARCH_X86_64
@@ -245,7 +246,8 @@ cglobal filter_block1d4_%1, 6, 6+(ARCH_X86_64*2), 11, LOCAL_VARS_SIZE, \
 ;-------------------------------------------------------------------------------
 %macro SUBPIX_HFILTER8 1
 cglobal filter_block1d8_%1, 6, 6+(ARCH_X86_64*1), 14, LOCAL_VARS_SIZE, \
-                            src, sstride, dst, dstride, height, filter
+                            "p", src, "p-", sstride, "p", dst, "p-", dstride, \
+                            "d", height, "p", filter
     mova                 m4, [filterq]
     SETUP_LOCAL_VARS
 %if ARCH_X86_64
@@ -346,7 +348,8 @@ cglobal filter_block1d8_%1, 6, 6+(ARCH_X86_64*1), 14, LOCAL_VARS_SIZE, \
 ;-------------------------------------------------------------------------------
 %macro SUBPIX_HFILTER16 1
 cglobal filter_block1d16_%1, 6, 6+(ARCH_X86_64*0), 14, LOCAL_VARS_SIZE, \
-                             src, sstride, dst, dstride, height, filter
+                             "p", src, "p-", sstride, "p", dst, "p-", dstride, \
+                             "d", height, "p", filter
     mova          m4, [filterq]
     SETUP_LOCAL_VARS
 .loop:
@@ -422,7 +425,8 @@ SUBPIX_HFILTER4  h8_avg
 ;-------------------------------------------------------------------------------
 %macro SUBPIX_VFILTER 2
 cglobal filter_block1d%2_%1, 6, 6+(ARCH_X86_64*3), 14, LOCAL_VARS_SIZE, \
-                             src, sstride, dst, dstride, height, filter
+                             "p", src, "p-", sstride, "p", dst, "p-", dstride, \
+                             "d", height, "p", filter
     mova          m4, [filterq]
     SETUP_LOCAL_VARS
 %if ARCH_X86_64
@@ -541,7 +545,8 @@ cglobal filter_block1d%2_%1, 6, 6+(ARCH_X86_64*3), 14, LOCAL_VARS_SIZE, \
 ;-------------------------------------------------------------------------------
 %macro SUBPIX_VFILTER16 1
 cglobal filter_block1d16_%1, 6, 6+(ARCH_X86_64*3), 14, LOCAL_VARS_SIZE, \
-                             src, sstride, dst, dstride, height, filter
+                             "p", src, "p-", sstride, "p", dst, "p-", dstride, \
+                             "d", height, "p", filter
     mova          m4, [filterq]
     SETUP_LOCAL_VARS
 %if ARCH_X86_64

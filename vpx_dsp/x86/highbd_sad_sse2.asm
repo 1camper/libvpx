@@ -15,19 +15,23 @@ SECTION .text
 %macro HIGH_SAD_FN 4
 %if %4 == 0
 %if %3 == 5
-cglobal highbd_sad%1x%2, 4, %3, 7, src, src_stride, ref, ref_stride, n_rows
+cglobal highbd_sad%1x%2, 4, %3, 7, "p", src, "d-", src_stride, \
+                                   "p", ref, "d-", ref_stride, n_rows
 %else ; %3 == 7
-cglobal highbd_sad%1x%2, 4, %3, 7, src, src_stride, ref, ref_stride, \
+cglobal highbd_sad%1x%2, 4, %3, 7, "p", src, "d-", src_stride, \
+                                   "p", ref, "d-", ref_stride, \
                             src_stride3, ref_stride3, n_rows
 %endif ; %3 == 5/7
 %else ; avg
 %if %3 == 5
-cglobal highbd_sad%1x%2_avg, 5, 1 + %3, 7, src, src_stride, ref, ref_stride, \
-                                    second_pred, n_rows
+cglobal highbd_sad%1x%2_avg, 5, 1 + %3, 7, "p", src, "d-", src_stride, \
+                                           "p", ref, "d-", ref_stride, \
+                                           "p", second_pred, n_rows
 %else ; %3 == 7
-cglobal highbd_sad%1x%2_avg, 5, ARCH_X86_64 + %3, 7, src, src_stride, \
-                                              ref, ref_stride, \
-                                              second_pred, \
+cglobal highbd_sad%1x%2_avg, 5, ARCH_X86_64 + %3, 7, \
+                                           "p", src, "d-", src_stride, \
+                                           "p", ref, "d-", ref_stride, \
+                                           "p", second_pred, \
                                               src_stride3, ref_stride3
 %if ARCH_X86_64
 %define n_rowsd r7d
@@ -36,8 +40,6 @@ cglobal highbd_sad%1x%2_avg, 5, ARCH_X86_64 + %3, 7, src, src_stride, \
 %endif ; x86-32/64
 %endif ; %3 == 5/7
 %endif ; avg/sad
-  movsxdifnidn src_strideq, src_strided
-  movsxdifnidn ref_strideq, ref_strided
 %if %3 == 7
   lea         src_stride3q, [src_strideq*3]
   lea         ref_stride3q, [ref_strideq*3]

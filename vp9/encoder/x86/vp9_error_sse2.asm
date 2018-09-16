@@ -18,7 +18,7 @@ SECTION .text
 ;                         int64_t *ssz)
 
 INIT_XMM sse2
-cglobal block_error, 3, 3, 8, uqc, dqc, size, ssz
+cglobal block_error, 3, 3, 8, "p", uqc, "p", dqc, "p-", size, "p", ssz
   pxor      m4, m4                 ; sse accumulator
   pxor      m6, m6                 ; ssz accumulator
   pxor      m5, m5                 ; dedicated zero register
@@ -77,10 +77,10 @@ cglobal block_error, 3, 3, 8, uqc, dqc, size, ssz
 
 ; Compute the sum of squared difference between two int16_t vectors.
 ; int64_t vp9_block_error_fp(int16_t *coeff, int16_t *dqcoeff,
-;                            intptr_t block_size)
+;                            int block_size)
 
 INIT_XMM sse2
-cglobal block_error_fp, 3, 3, 6, uqc, dqc, size
+cglobal block_error_fp, 3, 3, 6, "p", uqc, "p", dqc, "d-", size
   pxor      m4, m4                 ; sse accumulator
   pxor      m5, m5                 ; dedicated zero register
   lea     uqcq, [uqcq+sizeq*2]

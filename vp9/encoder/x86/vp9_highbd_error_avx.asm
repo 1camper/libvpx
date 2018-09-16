@@ -21,7 +21,7 @@ ALIGN 16
 ;
 
 INIT_XMM avx
-cglobal highbd_block_error_8bit, 4, 5, 8, uqc, dqc, size, ssz
+cglobal highbd_block_error_8bit, 4, 5, 8, "p", uqc, "p", dqc, "p-", size, "p", ssz
   vzeroupper
 
   ; If only one iteration is required, then handle this as a special case.

@@ -128,7 +128,7 @@ SECTION .text
 %endmacro
 
 INIT_XMM ssse3
-cglobal fdct8x8, 3, 5, 13, input, output, stride
+cglobal fdct8x8, 3, 5, 13, "p", input, "p", output, "d-", stride
 
   mova               m8, [pd_8192]
   mova              m12, [pw_11585x2]

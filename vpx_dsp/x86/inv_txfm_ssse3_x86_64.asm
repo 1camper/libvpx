@@ -214,7 +214,7 @@ SECTION .text
 
 INIT_XMM ssse3
 ; full inverse 8x8 2D-DCT transform
-cglobal idct8x8_64_add, 3, 5, 13, input, output, stride
+cglobal idct8x8_64_add, 3, 5, 13, "p", input, "p", output, "d-", stride
   mova     m8, [pd_8192]
   mova    m11, [pw_16]
   mova    m12, [pw_11585x2]
@@ -264,7 +264,7 @@ cglobal idct8x8_64_add, 3, 5, 13, input, output, stride
   RET
 
 ; inverse 8x8 2D-DCT transform with only first 10 coeffs non-zero
-cglobal idct8x8_12_add, 3, 5, 13, input, output, stride
+cglobal idct8x8_12_add, 3, 5, 13, "p", input, "p", output, "d-", stride
   mova       m8, [pd_8192]
   mova      m11, [pw_16]
   mova      m12, [pw_11585x2]
@@ -784,7 +784,7 @@ cglobal idct8x8_12_add, 3, 5, 13, input, output, stride
 %define stp r8
 
 INIT_XMM ssse3
-cglobal idct32x32_34_add, 3, 11, 16, i32x32_size, input, output, stride
+cglobal idct32x32_34_add, 3, 11, 16, i32x32_size, "p", input, "p", output, "d-", stride
   mova            m8, [pd_8192]
   lea            stp, [rsp + pass_one_start]
 
@@ -1212,7 +1212,7 @@ idct32x32_34_transpose_2:
 %endmacro
 
 INIT_XMM ssse3
-cglobal idct32x32_135_add, 3, 11, 16, i32x32_size, input, output, stride
+cglobal idct32x32_135_add, 3, 11, 16, i32x32_size, "p", input, "p", output, "d-", stride
   mova            m8, [pd_8192]
   mov             r6, 2
   lea            stp, [rsp + pass_one_start]
@@ -1676,7 +1676,7 @@ idct32x32_135_transpose_2:
 %endmacro
 
 INIT_XMM ssse3
-cglobal idct32x32_1024_add, 3, 11, 16, i32x32_size, input, output, stride
+cglobal idct32x32_1024_add, 3, 11, 16, i32x32_size, "p", input, "p", output, "d-", stride
   mova            m8, [pd_8192]
   mov             r6, 4
   lea            stp, [rsp + pass_one_start]
