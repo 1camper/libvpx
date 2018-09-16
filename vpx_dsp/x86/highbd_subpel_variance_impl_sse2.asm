@@ -120,8 +120,7 @@ SECTION .text
       %define g_pw_8m y_offsetm
 
       ; Store bilin_filter and pw_8 location in stack
-      GET_GOT eax
-      add esp, 4                ; restore esp
+      GET_GOT_NO_SAVE eax
 
       lea ecx, [GLOBAL(bilin_filter_m)]
       mov g_bilin_filterm, ecx
@@ -141,8 +140,7 @@ SECTION .text
       %define g_pw_8m y_offsetm
 
       ; Store bilin_filter and pw_8 location in stack
-      GET_GOT eax
-      add esp, 4                ; restore esp
+      GET_GOT_NO_SAVE eax
 
       lea ecx, [GLOBAL(bilin_filter_m)]
       mov g_bilin_filterm, ecx
