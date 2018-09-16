@@ -13,14 +13,15 @@
 SECTION .text
 
 %macro QUANTIZE_FN 2
-cglobal quantize_%1, 0, %2, 15, coeff, ncoeff, skip, zbin, round, quant, \
-                                shift, qcoeff, dqcoeff, dequant, \
-                                eob, scan, iscan
+cglobal quantize_%1, 0, %2, 15, "p", coeff, "p-", ncoeff, "d", skip, \
+                                "p", zbin, "p", round, "p", quant, "p", shift, \
+                                "p", qcoeff, "p", dqcoeff, "p", dequant, \
+                                "p", eob, "p", scan, "p", iscan
 
   vzeroupper
 
   ; If we can skip this block, then just zero the output
-  cmp                         skipmp, 0
+  cmp                         skipmd, 0
   jne .blank
 
 %ifnidn %1, b_32x32
@@ -36,8 +37,7 @@ cglobal quantize_%1, 0, %2, 15, coeff, ncoeff, skip, zbin, round, quant, \
 
 .single:
 
-  movifnidn                   coeffq, coeffmp
-  movifnidn                    zbinq, zbinmp
+  LOAD_ARG coeff, zbin
   mova                            m0, [zbinq]              ; m0 = zbin
 
   ; Get DC and first 15 AC coeffs - in this special case, that is all.
@@ -52,9 +52,10 @@ cglobal quantize_%1, 0, %2, 15, coeff, ncoeff, skip, zbin, round, quant, \
   mova                           m10, [coeffq+16]          ; m10 = c[i]
 %endif
 
-  mov                             r0, eobmp                ; Output pointer
-  mov                             r1, qcoeffmp             ; Output pointer
-  mov                             r2, dqcoeffmp            ; Output pointer
+  ASSIGN_ARG eob, 0                                        ; Output pointer
+  ASSIGN_ARG qcoeff, 1                                     ; Output pointer
+  ASSIGN_ARG dqcoeff, 2                                    ; Output pointer
+  LOAD_ARG eob, qcoeff, dqcoeff
 
   pxor                            m5, m5                   ; m5 = dedicated zero
 
@@ -90,18 +91,15 @@ cglobal quantize_%1, 0, %2, 15, coeff, ncoeff, skip, zbin, round, quant, \
 .single_nonzero:
 
   ; Actual quantization of size 16 block - setup pointers, rounders, etc.
-  movifnidn                       r4, roundmp
-  movifnidn                       r5, quantmp
-  mov                             r3, dequantmp
-  mov                             r6, shiftmp
+  ASSIGN_ARG dequant, 3
+  LOAD_ARG round, quant, dequant, shift
   mova                            m1, [r4]              ; m1 = round
   mova                            m2, [r5]              ; m2 = quant
   mova                            m3, [r3]              ; m3 = dequant
   mova                            m4, [r6]              ; m4 = shift
 
-  mov                             r3, iscanmp
-
-  DEFINE_ARGS eob, qcoeff, dqcoeff, iscan
+  ASSIGN_ARG iscan, 3
+  LOAD_ARG iscan
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -191,16 +189,14 @@ cglobal quantize_%1, 0, %2, 15, coeff, ncoeff, skip, zbin, round, quant, \
 
 %endif ; %ifnidn %1, b_32x32
 
-DEFINE_ARGS coeff, ncoeff, skip, zbin, round, quant, shift, \
-            qcoeff, dqcoeff, dequant, eob, scan, iscan
+DEFINE_ARGS "p", coeff, "p-", ncoeff, "d", skip, \
+            "p", zbin, "p", round, "p", quant, "p", shift, \
+            "p", qcoeff, "p", dqcoeff, "p", dequant, \
+            "p", eob, "p", scan, "p", iscan
 
   ; Actual quantization loop - setup pointers, rounders, etc.
-  movifnidn                   coeffq, coeffmp
-  movifnidn                  ncoeffq, ncoeffmp
-  mov                             r2, dequantmp
-  movifnidn                    zbinq, zbinmp
-  movifnidn                   roundq, roundmp
-  movifnidn                   quantq, quantmp
+  ASSIGN_ARG dequant, 2
+  LOAD_ARG coeff, ncoeff, dequant, zbin, round, quant
   mova                            m0, [zbinq]              ; m0 = zbin
   mova                            m1, [roundq]             ; m1 = round
   mova                            m2, [quantq]             ; m2 = quant
@@ -214,11 +210,13 @@ DEFINE_ARGS coeff, ncoeff, skip, zbin, round, quant, shift, \
 %endif
   paddw                           m0, m4                   ; m0 = m0 + 1
 
-  mov                             r2, shiftmp
-  mov                             r3, qcoeffmp
+  ASSIGN_ARG shift, 2
+  ASSIGN_ARG qcoeff, 3
+  ASSIGN_ARG dqcoeff, 4
+  ASSIGN_ARG iscan, 5
+  LOAD_ARG shift, qcoeff
   mova                            m4, [r2]                 ; m4 = shift
-  mov                             r4, dqcoeffmp
-  mov                             r5, iscanmp
+  LOAD_ARG dqcoeff, iscan
 %ifidn %1, b_32x32
   psllw                           m4, 1
 %endif
@@ -394,8 +392,9 @@ DEFINE_ARGS coeff, ncoeff, skip, zbin, round, quant, shift, \
   add                        ncoeffq, mmsize
   jnz .ac_only_loop
 
+  ASSIGN_ARG eob, 2
   ; Horizontally accumulate/max eobs and write into [eob] memory pointer
-  mov                             r2, eobmp
+  LOAD_ARG eob
   pshufd                          m7, m8, 0xe
   pmaxsw                          m8, m7
   pshuflw                         m7, m8, 0xe
@@ -482,7 +481,7 @@ DEFINE_ARGS coeff, ncoeff, skip, zbin, round, quant, shift, \
   jnz .ac_only_loop
 
   ; Horizontally accumulate/max eobs and write into [eob] memory pointer
-  mov                             r2, eobmp
+  LOAD_ARG eob
   pshufd                          m7, m8, 0xe
   pmaxsw                          m8, m7
   pshuflw                         m7, m8, 0xe
@@ -497,15 +496,15 @@ DEFINE_ARGS coeff, ncoeff, skip, zbin, round, quant, shift, \
   ; Skip-block, i.e. just write all zeroes
 .blank:
 
-DEFINE_ARGS coeff, ncoeff, skip, zbin, round, quant, shift, \
-            qcoeff, dqcoeff, dequant, eob, scan, iscan
+DEFINE_ARGS "p", coeff, "p-", ncoeff, "d", skip, \
+            "p", zbin, "p", round, "p", quant, "p", shift, \
+            "p", qcoeff, "p", dqcoeff, "p", dequant, \
+            "p", eob, "p", scan, "p", iscan
 
-  mov                             r0, dqcoeffmp
-  movifnidn                  ncoeffq, ncoeffmp
-  mov                             r2, qcoeffmp
-  mov                             r3, eobmp
-
-DEFINE_ARGS dqcoeff, ncoeff, qcoeff, eob
+  ASSIGN_ARG dqcoeff, 0
+  ASSIGN_ARG qcoeff, 2
+  ASSIGN_ARG eob, 3
+  LOAD_ARG dqcoeff, ncoeff, qcoeff, eob
 
 %if CONFIG_VP9_HIGHBITDEPTH
   lea                       dqcoeffq, [dqcoeffq+ncoeffq*4]

@@ -31,7 +31,7 @@ sh_bfedcba9876543210: db 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
 SECTION .text
 
 INIT_XMM ssse3
-cglobal d45_predictor_16x16, 3, 6, 4, dst, stride, above, dst8, line, goffset
+cglobal d45_predictor_16x16, 3, 5, 4, "p", dst, "p-", stride, "p", above, dst8, line, goffset
   GET_GOT     goffsetq
 
   mova                   m0, [aboveq]
@@ -82,7 +82,7 @@ cglobal d45_predictor_16x16, 3, 6, 4, dst, stride, above, dst8, line, goffset
   RET
 
 INIT_XMM ssse3
-cglobal d45_predictor_32x32, 3, 6, 7, dst, stride, above, dst16, line, goffset
+cglobal d45_predictor_32x32, 3, 5, 7, "p", dst, "p-", stride, "p", above, dst16, line, goffset
   GET_GOT     goffsetq
 
   mova                   m0, [aboveq]
@@ -177,7 +177,7 @@ cglobal d45_predictor_32x32, 3, 6, 7, dst, stride, above, dst16, line, goffset
 %endmacro
 
 INIT_XMM ssse3
-cglobal d63_predictor_4x4, 3, 4, 5, dst, stride, above, goffset
+cglobal d63_predictor_4x4, 3, 3, 5, "p", dst, "p-", stride, "p", above, goffset
   GET_GOT     goffsetq
 
   movq                m3, [aboveq]
@@ -199,7 +199,7 @@ cglobal d63_predictor_4x4, 3, 4, 5, dst, stride, above, goffset
   RET
 
 INIT_XMM ssse3
-cglobal d63_predictor_8x8, 3, 4, 5, dst, stride, above, goffset
+cglobal d63_predictor_8x8, 3, 3, 5, "p", dst, "p-", stride, "p", above, goffset
   GET_GOT     goffsetq
 
   movq                m3, [aboveq]
@@ -235,7 +235,7 @@ cglobal d63_predictor_8x8, 3, 4, 5, dst, stride, above, goffset
   RET
 
 INIT_XMM ssse3
-cglobal d63_predictor_16x16, 3, 5, 5, dst, stride, above, line, goffset
+cglobal d63_predictor_16x16, 3, 4, 5, "p", dst, "p-", stride, "p", above, line, goffset
   GET_GOT     goffsetq
 
   mova                m0, [aboveq]
@@ -265,7 +265,7 @@ cglobal d63_predictor_16x16, 3, 5, 5, dst, stride, above, line, goffset
   REP_RET
 
 INIT_XMM ssse3
-cglobal d63_predictor_32x32, 3, 5, 8, dst, stride, above, line, goffset
+cglobal d63_predictor_32x32, 3, 4, 8, "p", dst, "p-", stride, "p", above, line, goffset
   GET_GOT     goffsetq
 
   mova                   m0, [aboveq]
@@ -310,7 +310,7 @@ cglobal d63_predictor_32x32, 3, 5, 8, dst, stride, above, line, goffset
   REP_RET
 
 INIT_XMM ssse3
-cglobal d153_predictor_4x4, 4, 5, 4, dst, stride, above, left, goffset
+cglobal d153_predictor_4x4, 4, 4, 4, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
   movd                m0, [leftq]               ; l1, l2, l3, l4
   movd                m1, [aboveq-1]            ; tl, t1, t2, t3
@@ -342,7 +342,7 @@ cglobal d153_predictor_4x4, 4, 5, 4, dst, stride, above, left, goffset
   RET
 
 INIT_XMM ssse3
-cglobal d153_predictor_8x8, 4, 5, 8, dst, stride, above, left, goffset
+cglobal d153_predictor_8x8, 4, 4, 8, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
   movq                m0, [leftq]                     ; [0- 7] l1-8 [byte]
   movhps              m0, [aboveq-1]                  ; [8-15] tl, t1-7 [byte]
@@ -391,7 +391,7 @@ cglobal d153_predictor_8x8, 4, 5, 8, dst, stride, above, left, goffset
   RET
 
 INIT_XMM ssse3
-cglobal d153_predictor_16x16, 4, 5, 8, dst, stride, above, left, goffset
+cglobal d153_predictor_16x16, 4, 4, 8, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
   mova                m0, [leftq]
   movu                m7, [aboveq-1]
@@ -470,7 +470,7 @@ cglobal d153_predictor_16x16, 4, 5, 8, dst, stride, above, left, goffset
   RET
 
 INIT_XMM ssse3
-cglobal d153_predictor_32x32, 4, 5, 8, dst, stride, above, left, goffset
+cglobal d153_predictor_32x32, 4, 4, 8, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
   mova                  m0, [leftq]
   movu                  m7, [aboveq-1]
@@ -647,7 +647,7 @@ cglobal d153_predictor_32x32, 4, 5, 8, dst, stride, above, left, goffset
   RET
 
 INIT_XMM ssse3
-cglobal d207_predictor_8x8, 4, 5, 4, dst, stride, stride3, left, goffset
+cglobal d207_predictor_8x8, 4, 4, 4, "p", dst, "p-", stride, "p*", stride3, "p", left, goffset
   GET_GOT     goffsetq
   movq                m3, [leftq]            ; abcdefgh [byte]
   lea           stride3q, [strideq*3]
@@ -681,7 +681,7 @@ cglobal d207_predictor_8x8, 4, 5, 4, dst, stride, stride3, left, goffset
   RET
 
 INIT_XMM ssse3
-cglobal d207_predictor_16x16, 4, 5, 5, dst, stride, stride3, left, goffset
+cglobal d207_predictor_16x16, 4, 4, 5, "p", dst, "p-", stride, "p*", stride3, "p", left, goffset
   GET_GOT     goffsetq
   lea           stride3q, [strideq*3]
   mova                m0, [leftq]            ; abcdefghijklmnop [byte]
@@ -728,7 +728,7 @@ cglobal d207_predictor_16x16, 4, 5, 5, dst, stride, stride3, left, goffset
   REP_RET
 
 INIT_XMM ssse3
-cglobal d207_predictor_32x32, 4, 5, 8, dst, stride, stride3, left, goffset
+cglobal d207_predictor_32x32, 4, 4, 8, "p", dst, "p-", stride, "p*", stride3, "p", left, goffset
   GET_GOT     goffsetq
   lea           stride3q, [strideq*3]
   mova                m1, [leftq]              ;  0-15 [byte]

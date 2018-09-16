@@ -88,7 +88,7 @@ SECTION .text
 %endmacro
 
 INIT_XMM ssse3
-cglobal hadamard_8x8, 3, 5, 10, input, stride, output
+cglobal hadamard_8x8, 3, 5, 10, "p", input, "d-", stride, "p", output
   lea                r3, [2 * strideq]
   lea                r4, [4 * strideq]
 

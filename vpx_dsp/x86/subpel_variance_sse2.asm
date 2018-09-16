@@ -73,7 +73,7 @@ SECTION .text
   movhlps              m4, m6
   paddd                m7, m3
   paddd                m6, m4
-  mov                  r1, ssem         ; r1 = unsigned int *sse
+  mov                 r1p, ssemp        ; r1 = unsigned int *sse
   pshufd               m4, m6, 0x1
   movd               [r1], m7           ; store sse
   paddd                m6, m4
@@ -84,7 +84,7 @@ SECTION .text
   paddw                m6, m4
   paddd                m7, m3
   pcmpgtw              m5, m6           ; mask for 0 > x
-  mov                  r1, ssem         ; r1 = unsigned int *sse
+  mov                 r1p, ssemp        ; r1 = unsigned int *sse
   punpcklwd            m6, m5           ; sign-extend m6 word->dword
   movd               [r1], m7           ; store sse
   pshuflw              m4, m6, 0xe
@@ -116,25 +116,31 @@ SECTION .text
 
 %ifdef PIC    ; 64bit PIC
   %if %2 == 1 ; avg
-    cglobal sub_pixel_avg_variance%1xh, 9, 10, 13, src, src_stride, \
-                                      x_offset, y_offset, \
-                                      dst, dst_stride, \
-                                      sec, sec_stride, height, sse
+    cglobal sub_pixel_avg_variance%1xh, 9, 10, 13, \
+                                      "p", src, "p-", src_stride, \
+                                      "d", x_offset, "d", y_offset, \
+                                      "p", dst, "p-", dst_stride, \
+                                      "p", sec, "p-", sec_stride, \
+                                      "d", height, "p", sse
     %define sec_str sec_strideq
   %else
-    cglobal sub_pixel_variance%1xh, 7, 8, 13, src, src_stride, x_offset, \
-                                  y_offset, dst, dst_stride, height, sse
+    cglobal sub_pixel_variance%1xh, 7, 8, 13, \
+                                  "p", src, "p-", src_stride, \
+                                  "d", x_offset, "d", y_offset, \
+                                  "p", dst, "p-", dst_stride, \
+                                  "d", height, "p", sse
   %endif
   %define block_height heightd
   %define bilin_filter sseq
 %else
   %if ARCH_X86=1 && CONFIG_PIC=1
     %if %2 == 1 ; avg
-      cglobal sub_pixel_avg_variance%1xh, 7, 7, 13, src, src_stride, \
-                                  x_offset, y_offset, \
-                                  dst, dst_stride, \
-                                  sec, sec_stride, \
-                                  height, sse
+      cglobal sub_pixel_avg_variance%1xh, 7, 7, 13, \
+                                      "p", src, "p-", src_stride, \
+                                      "d", x_offset, "d", y_offset, \
+                                      "p", dst, "p-", dst_stride, \
+                                      "p", sec, "p-", sec_stride, \
+                                      "d", height, "p", sse
       %define block_height dword heightm
       %define sec_str sec_stridemp
 
@@ -155,8 +161,11 @@ SECTION .text
 
       LOAD_IF_USED 0, 1         ; load eax, ecx back
     %else
-      cglobal sub_pixel_variance%1xh, 7, 7, 13, src, src_stride, x_offset, \
-                                y_offset, dst, dst_stride, height, sse
+      cglobal sub_pixel_variance%1xh, 7, 7, 13, \
+                                  "p", src, "p-", src_stride, \
+                                  "d", x_offset, "d", y_offset, \
+                                  "p", dst, "p-", dst_stride, \
+                                  "d", height, "p", sse
       %define block_height heightd
 
       ; reuse argument stack space
@@ -179,11 +188,12 @@ SECTION .text
   %else
     %if %2 == 1 ; avg
       cglobal sub_pixel_avg_variance%1xh, 7 + 2 * ARCH_X86_64, \
-                        7 + 2 * ARCH_X86_64, 13, src, src_stride, \
-                                             x_offset, y_offset, \
-                                             dst, dst_stride, \
-                                             sec, sec_stride, \
-                                             height, sse
+                        7 + 2 * ARCH_X86_64, 13, \
+                                      "p", src, "p-", src_stride, \
+                                      "d", x_offset, "d", y_offset, \
+                                      "p", dst, "p-", dst_stride, \
+                                      "p", sec, "p-", sec_stride, \
+                                      "d", height, "p", sse
       %if ARCH_X86_64
       %define block_height heightd
       %define sec_str sec_strideq
@@ -192,8 +202,11 @@ SECTION .text
       %define sec_str sec_stridemp
       %endif
     %else
-      cglobal sub_pixel_variance%1xh, 7, 7, 13, src, src_stride, x_offset, \
-                              y_offset, dst, dst_stride, height, sse
+      cglobal sub_pixel_variance%1xh, 7, 7, 13, \
+                                  "p", src, "p-", src_stride, \
+                                  "d", x_offset, "d", y_offset, \
+                                  "p", dst, "p-", dst_stride, \
+                                  "d", height, "p", sse
       %define block_height heightd
     %endif
 

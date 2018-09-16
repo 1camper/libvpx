@@ -21,7 +21,7 @@ ALIGN 16
 ;
 
 INIT_XMM sse2
-cglobal highbd_block_error_8bit, 3, 3, 8, uqc, dqc, size, ssz
+cglobal highbd_block_error_8bit, 3, 3, 8, "p", uqc, "p", dqc, "p-", size, "p", ssz
   pxor      m4, m4                 ; sse accumulator
   pxor      m6, m6                 ; ssz accumulator
   pxor      m5, m5                 ; dedicated zero register
