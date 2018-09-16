@@ -24,7 +24,7 @@ pw2_32:  times 8 dw 16
 SECTION .text
 
 INIT_MMX sse
-cglobal dc_predictor_4x4, 4, 5, 2, dst, stride, above, left, goffset
+cglobal dc_predictor_4x4, 4, 4, 2, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
 
   pxor                  m1, m1
@@ -45,7 +45,7 @@ cglobal dc_predictor_4x4, 4, 5, 2, dst, stride, above, left, goffset
   RET
 
 INIT_MMX sse
-cglobal dc_left_predictor_4x4, 4, 5, 2, dst, stride, above, left, goffset
+cglobal dc_left_predictor_4x4, 4, 4, 2, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
 
   pxor                  m1, m1
@@ -65,7 +65,7 @@ cglobal dc_left_predictor_4x4, 4, 5, 2, dst, stride, above, left, goffset
   RET
 
 INIT_MMX sse
-cglobal dc_top_predictor_4x4, 4, 5, 2, dst, stride, above, left, goffset
+cglobal dc_top_predictor_4x4, 4, 4, 2, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
 
   pxor                  m1, m1
@@ -85,7 +85,7 @@ cglobal dc_top_predictor_4x4, 4, 5, 2, dst, stride, above, left, goffset
   RET
 
 INIT_MMX sse
-cglobal dc_predictor_8x8, 4, 5, 3, dst, stride, above, left, goffset
+cglobal dc_predictor_8x8, 4, 4, 3, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
 
   pxor                  m1, m1
@@ -114,7 +114,7 @@ cglobal dc_predictor_8x8, 4, 5, 3, dst, stride, above, left, goffset
   RET
 
 INIT_MMX sse
-cglobal dc_top_predictor_8x8, 4, 5, 3, dst, stride, above, left, goffset
+cglobal dc_top_predictor_8x8, 4, 4, 3, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
 
   pxor                  m1, m1
@@ -140,7 +140,7 @@ cglobal dc_top_predictor_8x8, 4, 5, 3, dst, stride, above, left, goffset
   RET
 
 INIT_MMX sse
-cglobal dc_left_predictor_8x8, 4, 5, 3, dst, stride, above, left, goffset
+cglobal dc_left_predictor_8x8, 4, 4, 3, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
 
   pxor                  m1, m1
@@ -166,7 +166,7 @@ cglobal dc_left_predictor_8x8, 4, 5, 3, dst, stride, above, left, goffset
   RET
 
 INIT_MMX sse
-cglobal dc_128_predictor_4x4, 4, 5, 3, dst, stride, above, left, goffset
+cglobal dc_128_predictor_4x4, 4, 4, 3, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
 
   DEFINE_ARGS dst, stride, stride3
@@ -180,7 +180,7 @@ cglobal dc_128_predictor_4x4, 4, 5, 3, dst, stride, above, left, goffset
   RET
 
 INIT_MMX sse
-cglobal dc_128_predictor_8x8, 4, 5, 3, dst, stride, above, left, goffset
+cglobal dc_128_predictor_8x8, 4, 4, 3, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
 
   DEFINE_ARGS dst, stride, stride3
@@ -199,7 +199,7 @@ cglobal dc_128_predictor_8x8, 4, 5, 3, dst, stride, above, left, goffset
   RET
 
 INIT_XMM sse2
-cglobal dc_predictor_16x16, 4, 5, 3, dst, stride, above, left, goffset
+cglobal dc_predictor_16x16, 4, 4, 3, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
 
   pxor                  m1, m1
@@ -232,7 +232,7 @@ cglobal dc_predictor_16x16, 4, 5, 3, dst, stride, above, left, goffset
 
 
 INIT_XMM sse2
-cglobal dc_top_predictor_16x16, 4, 5, 3, dst, stride, above, left, goffset
+cglobal dc_top_predictor_16x16, 4, 4, 3, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
 
   pxor                  m1, m1
@@ -264,7 +264,7 @@ cglobal dc_top_predictor_16x16, 4, 5, 3, dst, stride, above, left, goffset
   REP_RET
 
 INIT_XMM sse2
-cglobal dc_left_predictor_16x16, 4, 5, 3, dst, stride, above, left, goffset
+cglobal dc_left_predictor_16x16, 4, 4, 3, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
 
   pxor                  m1, m1
@@ -296,7 +296,7 @@ cglobal dc_left_predictor_16x16, 4, 5, 3, dst, stride, above, left, goffset
   REP_RET
 
 INIT_XMM sse2
-cglobal dc_128_predictor_16x16, 4, 5, 3, dst, stride, above, left, goffset
+cglobal dc_128_predictor_16x16, 4, 4, 3, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
 
   DEFINE_ARGS dst, stride, stride3, lines4
@@ -316,7 +316,7 @@ cglobal dc_128_predictor_16x16, 4, 5, 3, dst, stride, above, left, goffset
 
 
 INIT_XMM sse2
-cglobal dc_predictor_32x32, 4, 5, 5, dst, stride, above, left, goffset
+cglobal dc_predictor_32x32, 4, 4, 5, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
 
   pxor                  m1, m1
@@ -358,7 +358,7 @@ cglobal dc_predictor_32x32, 4, 5, 5, dst, stride, above, left, goffset
   REP_RET
 
 INIT_XMM sse2
-cglobal dc_top_predictor_32x32, 4, 5, 5, dst, stride, above, left, goffset
+cglobal dc_top_predictor_32x32, 4, 4, 5, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
 
   pxor                  m1, m1
@@ -394,7 +394,7 @@ cglobal dc_top_predictor_32x32, 4, 5, 5, dst, stride, above, left, goffset
   REP_RET
 
 INIT_XMM sse2
-cglobal dc_left_predictor_32x32, 4, 5, 5, dst, stride, above, left, goffset
+cglobal dc_left_predictor_32x32, 4, 4, 5, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
 
   pxor                  m1, m1
@@ -430,7 +430,7 @@ cglobal dc_left_predictor_32x32, 4, 5, 5, dst, stride, above, left, goffset
   REP_RET
 
 INIT_XMM sse2
-cglobal dc_128_predictor_32x32, 4, 5, 3, dst, stride, above, left, goffset
+cglobal dc_128_predictor_32x32, 4, 4, 3, "p", dst, "p-", stride, "p", above, "p", left, goffset
   GET_GOT     goffsetq
 
   DEFINE_ARGS dst, stride, stride3, lines4
@@ -453,7 +453,7 @@ cglobal dc_128_predictor_32x32, 4, 5, 3, dst, stride, above, left, goffset
   RET
 
 INIT_MMX sse
-cglobal v_predictor_4x4, 3, 3, 1, dst, stride, above
+cglobal v_predictor_4x4, 3, 3, 1, "p", dst, "p-", stride, "p", above
   movd                  m0, [aboveq]
   movd      [dstq        ], m0
   movd      [dstq+strideq], m0
@@ -463,7 +463,7 @@ cglobal v_predictor_4x4, 3, 3, 1, dst, stride, above
   RET
 
 INIT_MMX sse
-cglobal v_predictor_8x8, 3, 3, 1, dst, stride, above
+cglobal v_predictor_8x8, 3, 3, 1, "p", dst, "p-", stride, "p", above
   movq                  m0, [aboveq]
   DEFINE_ARGS dst, stride, stride3
   lea             stride3q, [strideq*3]
@@ -479,7 +479,7 @@ cglobal v_predictor_8x8, 3, 3, 1, dst, stride, above
   RET
 
 INIT_XMM sse2
-cglobal v_predictor_16x16, 3, 4, 1, dst, stride, above
+cglobal v_predictor_16x16, 3, 4, 1, "p", dst, "p-", stride, "p", above
   mova                  m0, [aboveq]
   DEFINE_ARGS dst, stride, stride3, nlines4
   lea             stride3q, [strideq*3]
@@ -495,7 +495,7 @@ cglobal v_predictor_16x16, 3, 4, 1, dst, stride, above
   REP_RET
 
 INIT_XMM sse2
-cglobal v_predictor_32x32, 3, 4, 2, dst, stride, above
+cglobal v_predictor_32x32, 3, 4, 2, "p", dst, "p-", stride, "p", above
   mova                  m0, [aboveq]
   mova                  m1, [aboveq+16]
   DEFINE_ARGS dst, stride, stride3, nlines4
@@ -516,7 +516,7 @@ cglobal v_predictor_32x32, 3, 4, 2, dst, stride, above
   REP_RET
 
 INIT_MMX sse
-cglobal tm_predictor_4x4, 4, 4, 4, dst, stride, above, left
+cglobal tm_predictor_4x4, 4, 4, 4, "p", dst, "p-", stride, "p", above, "p", left
   pxor                  m1, m1
   movd                  m2, [aboveq-1]
   movd                  m0, [aboveq]
@@ -546,7 +546,7 @@ cglobal tm_predictor_4x4, 4, 4, 4, dst, stride, above, left
   REP_RET
 
 INIT_XMM sse2
-cglobal tm_predictor_8x8, 4, 4, 4, dst, stride, above, left
+cglobal tm_predictor_8x8, 4, 4, 4, "p", dst, "p-", stride, "p", above, "p", left
   pxor                  m1, m1
   movd                  m2, [aboveq-1]
   movq                  m0, [aboveq]
@@ -578,7 +578,7 @@ cglobal tm_predictor_8x8, 4, 4, 4, dst, stride, above, left
   REP_RET
 
 INIT_XMM sse2
-cglobal tm_predictor_16x16, 4, 4, 7, dst, stride, above, left
+cglobal tm_predictor_16x16, 4, 4, 7, "p", dst, "p-", stride, "p", above, "p", left
   pxor                  m1, m1
   movd                  m2, [aboveq-1]
   mova                  m0, [aboveq]
@@ -616,7 +616,7 @@ cglobal tm_predictor_16x16, 4, 4, 7, dst, stride, above, left
 
 %if ARCH_X86_64
 INIT_XMM sse2
-cglobal tm_predictor_32x32, 4, 4, 10, dst, stride, above, left
+cglobal tm_predictor_32x32, 4, 4, 10, "p", dst, "p-", stride, "p", above, "p", left
   pxor                  m1, m1
   movd                  m2, [aboveq-1]
   mova                  m0, [aboveq]

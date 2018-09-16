@@ -16,11 +16,13 @@ SECTION .text
 INIT_XMM sse2
 %ifidn %2, highbd
 %define pavg pavgw
-cglobal %2_convolve_%1, 4, 7, 4, src, src_stride, dst, dst_stride, \
+cglobal %2_convolve_%1, 4, 7, 4, "p", src, "p-", src_stride, \
+                                 "p", dst, "p-", dst_stride, \
                                  fx, fxs, fy, fys, w, h, bd
 %else
 %define pavg pavgb
-cglobal convolve_%1, 4, 7, 4, src, src_stride, dst, dst_stride, \
+cglobal convolve_%1, 4, 7, 4, "p", src, "p-", src_stride, \
+                              "p", dst, "p-", dst_stride, \
                               fx, fxs, fy, fys, w, h
 %endif
   mov r4d, dword wm

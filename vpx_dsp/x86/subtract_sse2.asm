@@ -19,9 +19,8 @@ SECTION .text
 
 INIT_XMM sse2
 cglobal subtract_block, 7, 7, 8, \
-                        rows, cols, diff, diff_stride, src, src_stride, \
-                        pred, pred_stride
-%define pred_str colsq
+                        "d", rows, "d", cols, "p", diff, "p-", diff_stride, \
+                        "p", src, "p-",src_stride, "p", pred, "p-", pred_stride
   pxor                  m7, m7         ; dedicated zero register
   cmp                colsd, 4
   je .case_4
@@ -31,7 +30,7 @@ cglobal subtract_block, 7, 7, 8, \
   je .case_16
   cmp                colsd, 32
   je .case_32
-
+ASSIGN_ARG pred_stride, cols
 %macro loop16 6
   mova                  m0, [srcq+%1]
   mova                  m4, [srcq+%2]
@@ -55,34 +54,34 @@ cglobal subtract_block, 7, 7, 8, \
   mova [diffq+mmsize*1+%6], m1
 %endmacro
 
-  mov             pred_str, pred_stridemp
+  LOAD_ARG pred_stride
 .loop_64:
   loop16 0*mmsize, 1*mmsize, 0*mmsize, 1*mmsize, 0*mmsize, 2*mmsize
   loop16 2*mmsize, 3*mmsize, 2*mmsize, 3*mmsize, 4*mmsize, 6*mmsize
   lea                diffq, [diffq+diff_strideq*2]
-  add                predq, pred_str
+  add                predq, pred_strideq
   add                 srcq, src_strideq
   dec                rowsd
   jg .loop_64
   RET
 
 .case_32:
-  mov             pred_str, pred_stridemp
+  LOAD_ARG pred_stride
 .loop_32:
   loop16 0, mmsize, 0, mmsize, 0, 2*mmsize
   lea                diffq, [diffq+diff_strideq*2]
-  add                predq, pred_str
+  add                predq, pred_strideq
   add                 srcq, src_strideq
   dec                rowsd
   jg .loop_32
   RET
 
 .case_16:
-  mov             pred_str, pred_stridemp
+  LOAD_ARG pred_stride
 .loop_16:
-  loop16 0, src_strideq, 0, pred_str, 0, diff_strideq*2
+  loop16 0, src_strideq, 0, pred_strideq, 0, diff_strideq*2
   lea                diffq, [diffq+diff_strideq*4]
-  lea                predq, [predq+pred_str*2]
+  lea                predq, [predq+pred_strideq*2]
   lea                 srcq, [srcq+src_strideq*2]
   sub                rowsd, 2
   jg .loop_16
@@ -92,7 +91,7 @@ cglobal subtract_block, 7, 7, 8, \
   movh                  m0, [srcq]
   movh                  m2, [srcq+src_strideq]
   movh                  m1, [predq]
-  movh                  m3, [predq+pred_str]
+  movh                  m3, [predq+pred_strideq]
   punpcklbw             m0, m7
   punpcklbw             m1, m7
   punpcklbw             m2, m7
@@ -104,24 +103,24 @@ cglobal subtract_block, 7, 7, 8, \
 %endmacro
 
 .case_8:
-  mov             pred_str, pred_stridemp
+  LOAD_ARG pred_stride
 .loop_8:
   loop_h
   lea                diffq, [diffq+diff_strideq*4]
   lea                 srcq, [srcq+src_strideq*2]
-  lea                predq, [predq+pred_str*2]
+  lea                predq, [predq+pred_strideq*2]
   sub                rowsd, 2
   jg .loop_8
   RET
 
 INIT_MMX
 .case_4:
-  mov             pred_str, pred_stridemp
+  LOAD_ARG pred_stride
 .loop_4:
   loop_h
   lea                diffq, [diffq+diff_strideq*4]
   lea                 srcq, [srcq+src_strideq*2]
-  lea                predq, [predq+pred_str*2]
+  lea                predq, [predq+pred_strideq*2]
   sub                rowsd, 2
   jg .loop_4
   RET

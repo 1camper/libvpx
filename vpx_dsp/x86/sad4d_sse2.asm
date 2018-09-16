@@ -173,18 +173,18 @@ SECTION .text
 ; where NxN = 64x64, 32x32, 16x16, 16x8, 8x16 or 8x8
 %macro SADNXN4D 2
 %if UNIX64
-cglobal sad%1x%2x4d, 5, 8, 8, src, src_stride, ref1, ref_stride, \
-                              res, ref2, ref3, ref4
+cglobal sad%1x%2x4d, 5, 8, 8, "p", src, "d-", src_stride, \
+                              "p", ref1, "d-", ref_stride, \
+                              "p", res, ref2, ref3, ref4
 %else
-cglobal sad%1x%2x4d, 4, 7, 8, src, src_stride, ref1, ref_stride, \
-                              ref2, ref3, ref4
+cglobal sad%1x%2x4d, 4, 7, 8, "p", src, "d-", src_stride, \
+                              "p", ref1, "d-", ref_stride, \
+                              "p", ref2, ref3, ref4
 %endif
-  movsxdifnidn src_strideq, src_strided
-  movsxdifnidn ref_strideq, ref_strided
-  mov                ref2q, [ref1q+gprsize*1]
-  mov                ref3q, [ref1q+gprsize*2]
-  mov                ref4q, [ref1q+gprsize*3]
-  mov                ref1q, [ref1q+gprsize*0]
+  mov                ref2p, [ref1q+ptrsize*1]
+  mov                ref3p, [ref1q+ptrsize*2]
+  mov                ref4p, [ref1q+ptrsize*3]
+  mov                ref1p, [ref1q+ptrsize*0]
 
   PROCESS_%1x2x4 1, 0, 0, src_strideq, ref_strideq, 1
 %rep (%2-4)/2
@@ -201,12 +201,12 @@ cglobal sad%1x%2x4d, 4, 7, 8, src, src_stride, ref1, ref_stride, \
   mova                  m7, m6
   punpcklqdq            m4, m6
   punpckhqdq            m5, m7
-  movifnidn             r4, r4mp
+  LOAD_ARG 4
   paddd                 m4, m5
   movu                [r4], m4
   RET
 %else
-  movifnidn             r4, r4mp
+  LOAD_ARG 4
   movq               [r4+0], m6
   movq               [r4+8], m7
   RET

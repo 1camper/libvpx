@@ -48,7 +48,7 @@ SECTION .text
 %endmacro
 
 INIT_MMX mmx
-cglobal fwht4x4, 3, 4, 8, input, output, stride
+cglobal fwht4x4, 3, 4, 8, "p", input, "p", output, "d-", stride
   lea             r3q,       [inputq + strideq*4]
   movq            m0,        [inputq] ;a1
   movq            m1,        [inputq + strideq*2] ;b1
