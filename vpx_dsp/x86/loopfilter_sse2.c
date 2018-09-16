@@ -207,21 +207,21 @@ void vpx_lpf_vertical_4_sse2(uint8_t *s, int p /* pitch */,
   // 00 10 20 30 01 11 21 31  02 12 22 32 03 13 23 33
   ps1ps0 = _mm_unpacklo_epi8(ps1ps0, x0);
 
-  *(int *)(s + 0 * p - 2) = _mm_cvtsi128_si32(ps1ps0);
+  vpx_store_unaligned_uint32(s + 0 * p - 2, _mm_cvtsi128_si32(ps1ps0));
   ps1ps0 = _mm_srli_si128(ps1ps0, 4);
-  *(int *)(s + 1 * p - 2) = _mm_cvtsi128_si32(ps1ps0);
+  vpx_store_unaligned_uint32(s + 1 * p - 2, _mm_cvtsi128_si32(ps1ps0));
   ps1ps0 = _mm_srli_si128(ps1ps0, 4);
-  *(int *)(s + 2 * p - 2) = _mm_cvtsi128_si32(ps1ps0);
+  vpx_store_unaligned_uint32(s + 2 * p - 2, _mm_cvtsi128_si32(ps1ps0));
   ps1ps0 = _mm_srli_si128(ps1ps0, 4);
-  *(int *)(s + 3 * p - 2) = _mm_cvtsi128_si32(ps1ps0);
+  vpx_store_unaligned_uint32(s + 3 * p - 2, _mm_cvtsi128_si32(ps1ps0));
 
-  *(int *)(s + 4 * p - 2) = _mm_cvtsi128_si32(qs1qs0);
+  vpx_store_unaligned_uint32(s + 4 * p - 2, _mm_cvtsi128_si32(qs1qs0));
   qs1qs0 = _mm_srli_si128(qs1qs0, 4);
-  *(int *)(s + 5 * p - 2) = _mm_cvtsi128_si32(qs1qs0);
+  vpx_store_unaligned_uint32(s + 5 * p - 2, _mm_cvtsi128_si32(qs1qs0));
   qs1qs0 = _mm_srli_si128(qs1qs0, 4);
-  *(int *)(s + 6 * p - 2) = _mm_cvtsi128_si32(qs1qs0);
+  vpx_store_unaligned_uint32(s + 6 * p - 2, _mm_cvtsi128_si32(qs1qs0));
   qs1qs0 = _mm_srli_si128(qs1qs0, 4);
-  *(int *)(s + 7 * p - 2) = _mm_cvtsi128_si32(qs1qs0);
+  vpx_store_unaligned_uint32(s + 7 * p - 2, _mm_cvtsi128_si32(qs1qs0));
 }
 
 void vpx_lpf_horizontal_edge_8_sse2(unsigned char *s, int p,
