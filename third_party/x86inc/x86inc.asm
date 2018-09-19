@@ -147,9 +147,9 @@
                 ret
                 %%exitGG:
                 %define GLOBAL(x) x + %1 wrt ..gotoff
-                %undef RESTORE_GOT
+                %define RESTORE_GOT
             %endmacro
-            %macro GET_GOT
+            %macro GET_GOT 1
                 PUSH %1
                 GET_GOT_NO_SAVE %1
                 %define RESTORE_GOT POP %1
@@ -163,10 +163,11 @@
                 mov %1, [esp]
                 ret
                 %%exitGG:
+                %undef GLOBAL
                 %define GLOBAL(x) x + %1 - %%get_got
                 %undef RESTORE_GOT
             %endmacro
-            %macro GET_GOT
+            %macro GET_GOT 1
                 PUSH %1
                 GET_GOT_NO_SAVE %1
                 %define RESTORE_GOT POP %1
