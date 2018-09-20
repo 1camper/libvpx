@@ -19,16 +19,14 @@ pw_1: times 8 dw 1
 SECTION .text
 
 %macro QUANTIZE_FP 2
-cglobal quantize_%1, 0, %2, 15, coeff, ncoeff, skip, round, quant, \
-                                qcoeff, dqcoeff, dequant, \
-                                eob, scan, iscan
+cglobal quantize_%1, 0, %2, 15, "p", coeff, "p-", ncoeff, "d", skip, \
+                                "p", round, "p", quant, \
+                                "p", qcoeff, "p", dqcoeff, "p", dequant, \
+                                "p", eob, "p", scan, "p", iscan
 
   ; actual quantize loop - setup pointers, rounders, etc.
-  movifnidn                   coeffq, coeffmp
-  movifnidn                  ncoeffq, ncoeffmp
-  mov                             r2, dequantmp
-  movifnidn                   roundq, roundmp
-  movifnidn                   quantq, quantmp
+  ASSIGN_ARG dequant, 2
+  LOAD_ARG coeff, ncoeff, dequant, round, quant
   mova                            m1, [roundq]             ; m1 = round
   mova                            m2, [quantq]             ; m2 = quant
 %ifidn %1, fp_32x32
@@ -38,9 +36,10 @@ cglobal quantize_%1, 0, %2, 15, coeff, ncoeff, skip, round, quant, \
   psrlw                           m1, 1                    ; m1 = (m1 + 1) / 2
 %endif
   mova                            m3, [r2q]                ; m3 = dequant
-  mov                             r3, qcoeffmp
-  mov                             r4, dqcoeffmp
-  mov                             r5, iscanmp
+  ASSIGN_ARG qcoeff, 3
+  ASSIGN_ARG dqcoeff, 4
+  ASSIGN_ARG iscan, 5
+  LOAD_ARG qcoeff, dqcoeff, iscan
 %ifidn %1, fp_32x32
   psllw                           m2, 1
 %endif
@@ -161,7 +160,8 @@ cglobal quantize_%1, 0, %2, 15, coeff, ncoeff, skip, round, quant, \
 
 .accumulate_eob:
   ; horizontally accumulate/max eobs and write into [eob] memory pointer
-  mov                             r2, eobmp
+  ASSIGN_ARG eob, 2
+  LOAD_ARG eob
   pshufd                          m7, m8, 0xe
   pmaxsw                          m8, m7
   pshuflw                         m7, m8, 0xe

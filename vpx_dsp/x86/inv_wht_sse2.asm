@@ -82,7 +82,7 @@ SECTION .text
 %endmacro
 
 INIT_XMM sse2
-cglobal iwht4x4_16_add, 3, 3, 7, input, output, stride
+cglobal iwht4x4_16_add, 3, 3, 7, "p", input, "p", output, "d-", stride
   LOAD_TRAN_LOW    0, inputq, 0
   LOAD_TRAN_LOW    1, inputq, 8
   psraw           m0,        2

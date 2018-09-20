@@ -29,7 +29,7 @@ SECTION .text
 
 %if ARCH_X86_64
 INIT_XMM ssse3
-cglobal fdct8x8, 3, 5, 13, input, output, stride
+cglobal fdct8x8, 3, 5, 13, "p", input, "p", output, "d-", stride
 
   mova               m8, [GLOBAL(pd_8192)]
   mova              m12, [GLOBAL(pw_11585x2)]

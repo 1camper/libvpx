@@ -73,7 +73,7 @@ SECTION .text
   movhlps              m4, m6
   paddd                m7, m3
   paddd                m6, m4
-  mov                  r1, ssem         ; r1 = unsigned int *sse
+  mov                 r1p, ssemp        ; r1 = unsigned int *sse
   pshufd               m4, m6, 0x1
   movd               [r1], m7           ; store sse
   paddd                m6, m4
@@ -84,7 +84,7 @@ SECTION .text
   paddw                m6, m4
   paddd                m7, m3
   pcmpgtw              m5, m6           ; mask for 0 > x
-  mov                  r1, ssem         ; r1 = unsigned int *sse
+  mov                 r1p, ssemp        ; r1 = unsigned int *sse
   punpcklwd            m6, m5           ; sign-extend m6 word->dword
   movd               [r1], m7           ; store sse
   pshuflw              m4, m6, 0xe
@@ -116,29 +116,39 @@ SECTION .text
 
 %if ARCH_X86_64
   %if %2 == 1 ; avg
-    cglobal sub_pixel_avg_variance%1xh, 9, 10, 13, src, src_stride, \
-                                        x_offset, y_offset, ref, ref_stride, \
-                                        second_pred, second_stride, height, sse
+    cglobal sub_pixel_avg_variance%1xh, 9, 10, 13, \
+                                      "p", src, "p-", src_stride, \
+                                      "d", x_offset, "d", y_offset, \
+                                      "p", ref, "p-", ref_stride, \
+                                      "p", second_pred, "p-", second_stride, \
+                                      "d", height, "p", sse
     %define second_str second_strideq
   %else
-    cglobal sub_pixel_variance%1xh, 7, 8, 13, src, src_stride, \
-                                    x_offset, y_offset, ref, ref_stride, \
-                                    height, sse
+    cglobal sub_pixel_variance%1xh, 7, 8, 13, \
+                                  "p", src, "p-", src_stride, \
+                                  "d", x_offset, "d", y_offset, \
+                                  "p", ref, "p-", ref_stride, \
+                                  "d", height, "p", sse
   %endif
   %define block_height heightd
   %define bilin_filter sseq
 %else
   %if CONFIG_PIC=1
     %if %2 == 1 ; avg
-      cglobal sub_pixel_avg_variance%1xh, 7, 7, 13, src, src_stride, \
-                                          x_offset, y_offset, ref, ref_stride, \
-                                          second_pred, second_stride, height, sse
+      cglobal sub_pixel_avg_variance%1xh, 7, 7, 13, \
+                                      "p*", src, "p-*", src_stride, \
+                                      "d", x_offset, "d", y_offset, \
+                                      "p", ref, "p-", ref_stride, \
+                                      "p", second_pred, "p-", second_stride, \
+                                      "d", height, "p", sse
       %define block_height dword heightm
       %define second_str second_stridemp
     %else
-      cglobal sub_pixel_variance%1xh, 7, 7, 13, src, src_stride, \
-                                      x_offset, y_offset, ref, ref_stride, \
-                                      height, sse
+      cglobal sub_pixel_variance%1xh, 7, 7, 13, \
+                                  "p*", src, "p-*", src_stride, \
+                                  "d", x_offset, "d", y_offset, \
+                                  "p", ref, "p-", ref_stride, \
+                                  "d", height, "p", sse
       %define block_height heightd
     %endif
 
@@ -147,30 +157,32 @@ SECTION .text
     %define g_pw_8m y_offsetm
 
     ;Store bilin_filter and pw_8 location in stack
-    %if GET_GOT_DEFINED == 1
-      GET_GOT eax
-      add esp, 4                ; restore esp
-    %endif
+    GET_GOT_NO_SAVE src_stridep
 
-    lea ecx, [GLOBAL(bilin_filter_m)]
-    mov g_bilin_filterm, ecx
+    lea srcp, [GLOBAL(bilin_filter_m)]
+    mov g_bilin_filterm, srcp
 
-    lea ecx, [GLOBAL(pw_8)]
-    mov g_pw_8m, ecx
+    lea srcp, [GLOBAL(pw_8)]
+    mov g_pw_8m, srcp
 
-    LOAD_IF_USED 0, 1         ; load eax, ecx back
+    LOAD_ARG src, src_stride
   %else
     %if %2 == 1 ; avg
-      cglobal sub_pixel_avg_variance%1xh, 7, 7, 13, src, src_stride, \
-                                          x_offset, y_offset, \
-                                          ref, ref_stride, second_pred, second_stride, \
-                                          height, sse
+      cglobal sub_pixel_avg_variance%1xh, 7 + 2 * ARCH_X86_64, \
+                        7 + 2 * ARCH_X86_64, 13, \
+                                      "p", src, "p-", src_stride, \
+                                      "d", x_offset, "d", y_offset, \
+                                      "p", ref, "p-", ref_stride, \
+                                      "p", second_pred, "p-", second_stride, \
+                                      "d", height, "p", sse
       %define block_height dword heightm
       %define second_str second_stridemp
     %else
-      cglobal sub_pixel_variance%1xh, 7, 7, 13, src, src_stride, \
-                                      x_offset, y_offset, ref, ref_stride, \
-                                      height, sse
+      cglobal sub_pixel_variance%1xh, 7, 7, 13, \
+                                  "p", src, "p-", src_stride, \
+                                  "d", x_offset, "d", y_offset, \
+                                  "p", ref, "p-", ref_stride, \
+                                  "d", height, "p", sse
       %define block_height heightd
     %endif
     %define bilin_filter bilin_filter_m
