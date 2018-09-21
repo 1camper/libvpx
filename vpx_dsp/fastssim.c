@@ -122,12 +122,12 @@ static void fs_downsample_level(fs_ctx *_ctx, int _l) {
     int j0offs;
     int j1offs;
     j0offs = 2 * j * w2;
-    j1offs = FS_MINI(2 * j + 1, h2) * w2;
+    j1offs = FS_MINI(2 * j + 1, h2 - 1) * w2;
     for (i = 0; i < w; i++) {
       int i0;
       int i1;
       i0 = 2 * i;
-      i1 = FS_MINI(i0 + 1, w2);
+      i1 = FS_MINI(i0 + 1, w2 - 1);
       dst1[j * w + i] = src1[j0offs + i0] + src1[j0offs + i1] +
                         src1[j1offs + i0] + src1[j1offs + i1];
       dst2[j * w + i] = src2[j0offs + i0] + src2[j0offs + i1] +
@@ -154,12 +154,12 @@ static void fs_downsample_level0(fs_ctx *_ctx, const uint8_t *_src1,
     int j0;
     int j1;
     j0 = 2 * j;
-    j1 = FS_MINI(j0 + 1, _h);
+    j1 = FS_MINI(j0 + 1, _h - 1);
     for (i = 0; i < w; i++) {
       int i0;
       int i1;
       i0 = 2 * i;
-      i1 = FS_MINI(i0 + 1, _w);
+      i1 = FS_MINI(i0 + 1, _w - 1);
       if (bd == 8 && shift == 0) {
         dst1[j * w + i] =
             _src1[j0 * _s1ystride + i0] + _src1[j0 * _s1ystride + i1] +
