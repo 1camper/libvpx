@@ -379,7 +379,7 @@ static vpx_codec_err_t vp8_decode(vpx_codec_alg_priv_t *ctx,
            * reallocation is attempted on resync. */
           ctx->si.w = 0;
           ctx->si.h = 0;
-          vpx_clear_system_state();
+          assert(vpx_check_system_state());
           /* same return value as used in vp8dx_receive_compressed_data */
           return -1;
         }

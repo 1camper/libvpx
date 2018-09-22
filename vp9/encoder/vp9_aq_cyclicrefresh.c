@@ -603,7 +603,7 @@ void vp9_cyclic_refresh_setup(VP9_COMP *const cpi) {
     int qindex2;
     const double q = vp9_convert_qindex_to_q(cm->base_qindex, cm->bit_depth);
     cr->counter_encode_maxq_scene_change++;
-    vpx_clear_system_state();
+    assert(vpx_check_system_state());
     // Set rate threshold to some multiple (set to 2 for now) of the target
     // rate (target is given by sb64_target_rate and scaled by 256).
     cr->thresh_rate_sb = ((int64_t)(rc->sb64_target_rate) << 8) << 2;

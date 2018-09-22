@@ -402,7 +402,7 @@ static void config_target_level(VP9EncoderConfig *oxcf) {
   int max_over_shoot_pct;
   const int target_level_index = get_level_index(oxcf->target_level);
 
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
   assert(target_level_index >= 0);
   assert(target_level_index < VP9_LEVELS);
 
@@ -1125,7 +1125,7 @@ static vpx_codec_err_t encoder_encode(vpx_codec_alg_priv_t *ctx,
   if (setjmp(cpi->common.error.jmp)) {
     cpi->common.error.setjmp = 0;
     res = update_error_state(ctx, &cpi->common.error);
-    vpx_clear_system_state();
+    assert(vpx_check_system_state());
     return res;
   }
   cpi->common.error.setjmp = 1;

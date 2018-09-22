@@ -296,8 +296,7 @@ static void calc_iframe_target_size(VP8_COMP *cpi) {
   int kf_boost;
   uint64_t target;
 
-  /* Clear down mmx registers to allow floating point in what follows */
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
 
   if (cpi->oxcf.fixed_q >= 0) {
     int Q = cpi->oxcf.key_q;
@@ -1032,8 +1031,7 @@ void vp8_update_rate_correction_factors(VP8_COMP *cpi, int damp_var) {
 
   int projected_size_based_on_q = 0;
 
-  /* Clear down mmx registers to allow floating point in what follows */
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
 
   if (cpi->common.frame_type == KEY_FRAME) {
     rate_correction_factor = cpi->key_frame_rate_correction_factor;
@@ -1318,8 +1316,7 @@ static int estimate_keyframe_frequency(VP8_COMP *cpi) {
 }
 
 void vp8_adjust_key_frame_context(VP8_COMP *cpi) {
-  /* Clear down mmx registers to allow floating point in what follows */
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
 
   /* Do we have any key frame overspend to recover? */
   /* Two-pass overspend handled elsewhere. */

@@ -48,7 +48,7 @@ void vp9_360aq_frame_setup(VP9_COMP *cpi) {
 
     seg->abs_delta = SEGMENT_DELTADATA;
 
-    vpx_clear_system_state();
+    assert(vpx_check_system_state());
 
     for (i = 0; i < MAX_SEGMENTS; ++i) {
       int qindex_delta =

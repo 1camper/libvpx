@@ -473,7 +473,7 @@ double vpx_calc_fastssim(const YV12_BUFFER_CONFIG *source,
                          uint32_t in_bd) {
   double ssimv;
   uint32_t bd_shift = 0;
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
   assert(bd >= in_bd);
   bd_shift = bd - in_bd;
 

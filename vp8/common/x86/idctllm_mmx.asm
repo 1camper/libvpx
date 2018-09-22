@@ -212,6 +212,7 @@ sym(vp8_short_idct4x4llm_mmx):
     movd        [rdx+rdi*2],    mm5
 
     ; begin epilog
+    emms
     pop rdi
     pop rsi
     RESTORE_GOT
@@ -279,6 +280,7 @@ sym(vp8_dc_only_idct_add_mmx):
         movd        [rax+rcx],      mm4
 
     ; begin epilog
+    emms
     RESTORE_GOT
     UNSHADOW_ARGS
     pop         rbp

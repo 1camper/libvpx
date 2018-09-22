@@ -48,8 +48,7 @@ void vp9_setup_in_frame_q_adj(VP9_COMP *cpi) {
   VP9_COMMON *const cm = &cpi->common;
   struct segmentation *const seg = &cm->seg;
 
-  // Make SURE use of floating point in this function is safe.
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
 
   if (frame_is_intra_only(cm) || cm->error_resilient_mode ||
       cpi->refresh_alt_ref_frame || cpi->force_update_segmentation ||
@@ -131,7 +130,7 @@ void vp9_caq_select_segment(VP9_COMP *cpi, MACROBLOCK *mb, BLOCK_SIZE bs,
     double low_var_thresh;
     const int aq_strength = get_aq_c_strength(cm->base_qindex, cm->bit_depth);
 
-    vpx_clear_system_state();
+    assert(vpx_check_system_state());
     low_var_thresh = (cpi->oxcf.pass == 2) ? VPXMAX(cpi->twopass.mb_av_energy,
                                                     MIN_DEFAULT_LV_THRESH)
                                            : DEFAULT_LV_THRESH;

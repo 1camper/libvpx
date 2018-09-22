@@ -279,7 +279,7 @@ double vpx_get_ssim_metrics(uint8_t *img1, int img1_pitch, uint8_t *img2,
   int c = 0;
   double norm;
   double old_ssim_total = 0;
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
   // We can sample points as frequently as we like start with 1 per 4x4.
   for (i = 0; i < height;
        i += 4, img1 += img1_pitch * 4, img2 += img2_pitch * 4) {

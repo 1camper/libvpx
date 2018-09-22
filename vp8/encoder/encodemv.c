@@ -121,7 +121,7 @@ void vp8_build_component_cost_table(int *mvcost[2], const MV_CONTEXT *mvc,
   unsigned int cost0 = 0;
   unsigned int cost1 = 0;
 
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
 
   i = 1;
 

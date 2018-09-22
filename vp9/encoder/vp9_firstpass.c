@@ -898,7 +898,7 @@ void vp9_first_pass_encode_tile_mb_row(VP9_COMP *cpi, ThreadData *td,
                           mb_row * uv_mb_height * x->plane[1].src.stride +
                           mb_col * uv_mb_height;
 
-    vpx_clear_system_state();
+    assert(vpx_check_system_state());
 
     xd->plane[0].dst.buf = new_yv12->y_buffer + recon_yoffset;
     xd->plane[1].dst.buf = new_yv12->u_buffer + recon_uvoffset;
@@ -974,7 +974,7 @@ void vp9_first_pass_encode_tile_mb_row(VP9_COMP *cpi, ThreadData *td,
     }
 #endif  // CONFIG_VP9_HIGHBITDEPTH
 
-    vpx_clear_system_state();
+    assert(vpx_check_system_state());
     log_intra = log(this_error + 1.0);
     if (log_intra < 10.0) {
       mb_intra_factor = 1.0 + ((10.0 - log_intra) * 0.05);
@@ -1170,7 +1170,7 @@ void vp9_first_pass_encode_tile_mb_row(VP9_COMP *cpi, ThreadData *td,
 #endif
 
       if (motion_error <= this_error) {
-        vpx_clear_system_state();
+        assert(vpx_check_system_state());
 
         // Keep a count of cases where the inter and intra were very close
         // and very low. This helps with scene cut detection for example in
@@ -1315,7 +1315,7 @@ void vp9_first_pass_encode_tile_mb_row(VP9_COMP *cpi, ThreadData *td,
     (*(cpi->row_mt_sync_write_ptr))(&tile_data->row_mt_sync, mb_row, c,
                                     num_mb_cols);
   }
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
 }
 
 static void first_pass_encode(VP9_COMP *cpi, FIRSTPASS_DATA *fp_acc_data) {
@@ -1351,7 +1351,7 @@ void vp9_first_pass(VP9_COMP *cpi, const struct lookahead_entry *source) {
   FIRSTPASS_DATA fp_temp_data;
   FIRSTPASS_DATA *fp_acc_data = &fp_temp_data;
 
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
   vp9_zero(fp_temp_data);
   fp_acc_data->image_data_start_row = INVALID_ROW;
 
@@ -2457,7 +2457,7 @@ static void define_gf_group(VP9_COMP *cpi, FIRSTPASS_STATS *this_frame) {
     vp9_zero(twopass->gf_group);
   }
 
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
   vp9_zero(next_frame);
 
   // Load stats for the current frame.
@@ -3154,7 +3154,7 @@ void vp9_rc_get_second_pass_params(VP9_COMP *cpi) {
     return;
   }
 
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
 
   if (cpi->oxcf.rc_mode == VPX_Q) {
     twopass->active_worst_quality = cpi->oxcf.cq_level;

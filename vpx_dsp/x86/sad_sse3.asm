@@ -274,6 +274,7 @@ sym(vpx_sad8x16x3_sse3):
         movq            [rcx],      mm5
         movd            [rcx+8],    mm7
 
+    emms
     STACK_FRAME_DESTROY_X3
 
 ;void int vpx_sad8x8x3_sse3(
@@ -299,6 +300,7 @@ sym(vpx_sad8x8x3_sse3):
         movq            [rcx],      mm5
         movd            [rcx+8],    mm7
 
+    emms
     STACK_FRAME_DESTROY_X3
 
 ;void int vpx_sad4x4x3_sse3(
@@ -373,4 +375,5 @@ sym(vpx_sad4x4x3_sse3):
         movq            [rcx],      mm1
         movd            [rcx+8],    mm7
 
+    emms
     STACK_FRAME_DESTROY_X3

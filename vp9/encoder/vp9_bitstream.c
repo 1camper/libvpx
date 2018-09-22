@@ -1362,7 +1362,7 @@ void vp9_pack_bitstream(VP9_COMP *cpi, uint8_t *dest, size_t *size) {
   uncompressed_hdr_size = vpx_wb_bytes_written(&wb);
   data += uncompressed_hdr_size;
 
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
 
   first_part_size = write_compressed_header(cpi, data);
   data += first_part_size;

@@ -69,6 +69,7 @@ sym(vp8_copy_mem8x8_mmx):
         movq        [rdi+rcx*2],mm1
 
     ; begin epilog
+    emms
     pop rdi
     pop rsi
     UNSHADOW_ARGS
@@ -113,6 +114,7 @@ sym(vp8_copy_mem8x4_mmx):
         movq        [rdi+rcx],      mm3
 
     ; begin epilog
+    emms
     pop rdi
     pop rsi
     UNSHADOW_ARGS

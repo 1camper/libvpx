@@ -818,6 +818,7 @@ sym(vp8_filter_block1d4_v6_ssse3):
     jnz         .vp8_filter_block1d4_v6_ssse3_loop
 
     ; begin epilog
+    emms
     pop rdi
     pop rsi
     RESTORE_GOT
@@ -866,6 +867,7 @@ sym(vp8_filter_block1d4_v6_ssse3):
     jnz         .vp8_filter_block1d4_v4_ssse3_loop
 
     ; begin epilog
+    emms
     pop rdi
     pop rsi
     RESTORE_GOT

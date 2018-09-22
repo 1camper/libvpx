@@ -220,6 +220,7 @@ sym(vpx_post_proc_down_and_across_mb_row_sse2):
         dec         rcx                          ;decrement count
         jnz         .nextrow                     ;next row
 
+    emms
     add rsp, 16
     pop rsp
     ; begin epilog
@@ -412,6 +413,7 @@ sym(vpx_mbpost_proc_across_ip_sse2):
         cmp dword arg(2), 0
         jg .ip_row_loop
 
+    emms
     add         rsp, 16
     pop         rsp
 

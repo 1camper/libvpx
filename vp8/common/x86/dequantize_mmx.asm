@@ -44,6 +44,7 @@ sym(vp8_dequantize_b_impl_mmx):
         movq      [rdi+24], mm1
 
     ; begin epilog
+    emms
     pop rdi
     pop rsi
     UNSHADOW_ARGS
@@ -241,6 +242,7 @@ sym(vp8_dequant_idct_add_mmx):
         movd        [rdx+rdi*2],    mm5
 
     ; begin epilog
+    emms
     pop rdi
     RESTORE_GOT
     UNSHADOW_ARGS

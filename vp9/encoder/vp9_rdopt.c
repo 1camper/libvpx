@@ -3086,60 +3086,56 @@ int vp9_internal_image_edge(VP9_COMP *cpi) {
 // In most cases this is the "real" edge unless there are formatting
 // bars embedded in the stream.
 int vp9_active_h_edge(VP9_COMP *cpi, int mi_row, int mi_step) {
-  vpx_clear_system_state();
-  {
-    int top_edge = 0;
-    int bottom_edge = cpi->common.mi_rows;
-    int is_active_h_edge = 0;
+  int top_edge = 0;
+  int bottom_edge = cpi->common.mi_rows;
+  int is_active_h_edge = 0;
 
-    // For two pass account for any formatting bars detected.
-    if (cpi->oxcf.pass == 2) {
-      TWO_PASS *twopass = &cpi->twopass;
+  assert(vpx_check_system_state());
+  // For two pass account for any formatting bars detected.
+  if (cpi->oxcf.pass == 2) {
+    TWO_PASS *twopass = &cpi->twopass;
 
-      // The inactive region is specified in MBs not mi units.
-      // The image edge is in the following MB row.
-      top_edge += (int)(twopass->this_frame_stats.inactive_zone_rows * 2);
+    // The inactive region is specified in MBs not mi units.
+    // The image edge is in the following MB row.
+    top_edge += (int)(twopass->this_frame_stats.inactive_zone_rows * 2);
 
-      bottom_edge -= (int)(twopass->this_frame_stats.inactive_zone_rows * 2);
-      bottom_edge = VPXMAX(top_edge, bottom_edge);
-    }
-
-    if (((top_edge >= mi_row) && (top_edge < (mi_row + mi_step))) ||
-        ((bottom_edge >= mi_row) && (bottom_edge < (mi_row + mi_step)))) {
-      is_active_h_edge = 1;
-    }
-    return is_active_h_edge;
+    bottom_edge -= (int)(twopass->this_frame_stats.inactive_zone_rows * 2);
+    bottom_edge = VPXMAX(top_edge, bottom_edge);
   }
+
+  if (((top_edge >= mi_row) && (top_edge < (mi_row + mi_step))) ||
+      ((bottom_edge >= mi_row) && (bottom_edge < (mi_row + mi_step)))) {
+    is_active_h_edge = 1;
+  }
+  return is_active_h_edge;
 }
 
 // Checks to see if a super block is on a vertical image edge.
 // In most cases this is the "real" edge unless there are formatting
 // bars embedded in the stream.
 int vp9_active_v_edge(VP9_COMP *cpi, int mi_col, int mi_step) {
-  vpx_clear_system_state();
-  {
-    int left_edge = 0;
-    int right_edge = cpi->common.mi_cols;
-    int is_active_v_edge = 0;
+  int left_edge = 0;
+  int right_edge = cpi->common.mi_cols;
+  int is_active_v_edge = 0;
 
-    // For two pass account for any formatting bars detected.
-    if (cpi->oxcf.pass == 2) {
-      TWO_PASS *twopass = &cpi->twopass;
+  assert(vpx_check_system_state());
+  // For two pass account for any formatting bars detected.
+  if (cpi->oxcf.pass == 2) {
+    TWO_PASS *twopass = &cpi->twopass;
 
-      // The inactive region is specified in MBs not mi units.
-      // The image edge is in the following MB row.
-      left_edge += (int)(twopass->this_frame_stats.inactive_zone_cols * 2);
+    // The inactive region is specified in MBs not mi units.
+    // The image edge is in the following MB row.
+    left_edge += (int)(twopass->this_frame_stats.inactive_zone_cols * 2);
 
-      right_edge -= (int)(twopass->this_frame_stats.inactive_zone_cols * 2);
-      right_edge = VPXMAX(left_edge, right_edge);
-    }
-
-    if (((left_edge >= mi_col) && (left_edge < (mi_col + mi_step))) ||
-        ((right_edge >= mi_col) && (right_edge < (mi_col + mi_step)))) {
-      is_active_v_edge = 1;
-    }
-    return is_active_v_edge;
+    right_edge -= (int)(twopass->this_frame_stats.inactive_zone_cols * 2);
+    right_edge = VPXMAX(left_edge, right_edge);
   }
+
+  if (((left_edge >= mi_col) && (left_edge < (mi_col + mi_step))) ||
+      ((right_edge >= mi_col) && (right_edge < (mi_col + mi_step)))) {
+    is_active_v_edge = 1;
+  }
+  return is_active_v_edge;
 }
 
 // Checks to see if a super block is at the edge of the active image.

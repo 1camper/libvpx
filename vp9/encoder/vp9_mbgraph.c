@@ -396,7 +396,7 @@ void vp9_update_mbgraph_stats(VP9_COMP *cpi) {
                                cpi->Source);
   }
 
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
 
   separate_arf_mbs(cpi);
 }

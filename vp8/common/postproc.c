@@ -204,7 +204,7 @@ int vp8_post_proc_frame(VP8_COMMON *oci, YV12_BUFFER_CONFIG *dest,
     }
   }
 
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
 
   if ((flags & VP8D_MFQE) && oci->postproc_state.last_frame_valid &&
       oci->current_video_frame > 10 &&
@@ -246,7 +246,7 @@ int vp8_post_proc_frame(VP8_COMMON *oci, YV12_BUFFER_CONFIG *dest,
         oci->postproc_state.last_noise != noise_level) {
       double sigma;
       struct postproc_state *ppstate = &oci->postproc_state;
-      vpx_clear_system_state();
+      assert(vpx_check_system_state());
       sigma = noise_level + .5 + .6 * q / 63.0;
       ppstate->clamp =
           vpx_setup_noise(sigma, ppstate->generated_noise, oci->Width + 256);

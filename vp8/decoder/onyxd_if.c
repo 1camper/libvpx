@@ -344,7 +344,7 @@ int vp8dx_receive_compressed_data(VP8D_COMP *pbi, size_t size,
     goto decode_exit;
   }
 
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
 
   if (cm->show_frame) {
     cm->current_video_frame++;
@@ -407,7 +407,7 @@ int vp8dx_get_raw_frame(VP8D_COMP *pbi, YV12_BUFFER_CONFIG *sd,
   }
 
 #endif /*!CONFIG_POSTPROC*/
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
   return ret;
 }
 

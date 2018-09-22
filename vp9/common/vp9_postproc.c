@@ -306,7 +306,7 @@ int vp9_post_proc_frame(struct VP9Common *cm, YV12_BUFFER_CONFIG *dest,
     return 0;
   }
 
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
 
   // Alloc memory for prev_mip in the first frame.
   if (cm->current_video_frame == 1) {
@@ -408,7 +408,7 @@ int vp9_post_proc_frame(struct VP9Common *cm, YV12_BUFFER_CONFIG *dest,
     const int noise_level = ppflags->noise_level;
     if (ppstate->last_q != q || ppstate->last_noise != noise_level) {
       double sigma;
-      vpx_clear_system_state();
+      assert(vpx_check_system_state());
       sigma = noise_level + .5 + .6 * q / 63.0;
       ppstate->clamp =
           vpx_setup_noise(sigma, ppstate->generated_noise, cm->width + 256);

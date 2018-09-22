@@ -8,6 +8,7 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 #include <stdlib.h>
+#include <assert.h>
 
 #include "vpx/vpx_integer.h"
 #include "vpx_ports/system_state.h"
@@ -118,7 +119,7 @@ double vp9_get_blockiness(const uint8_t *img1, int img1_pitch,
                           int height) {
   double blockiness = 0;
   int i, j;
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
   for (i = 0; i < height;
        i += 4, img1 += img1_pitch * 4, img2 += img2_pitch * 4) {
     for (j = 0; j < width; j += 4) {

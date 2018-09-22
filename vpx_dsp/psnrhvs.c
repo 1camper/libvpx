@@ -256,7 +256,7 @@ double vpx_psnrhvs(const YV12_BUFFER_CONFIG *src,
   const double par = 1.0;
   const int step = 7;
   uint32_t bd_shift = 0;
-  vpx_clear_system_state();
+  assert(vpx_check_system_state());
 
   assert(bd == 8 || bd == 10 || bd == 12);
   assert(bd >= in_bd);
