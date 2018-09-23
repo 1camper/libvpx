@@ -70,8 +70,8 @@ static const int64_t cc2_10 = 3857925;   // (64^2*(.03*1023)^2
 static const int64_t cc1_12 = 6868593;   // (64^2*(.01*4095)^2
 static const int64_t cc2_12 = 61817334;  // (64^2*(.03*4095)^2
 
-static double similarity(uint32_t sum_s, uint32_t sum_r, uint32_t sum_sq_s,
-                         uint32_t sum_sq_r, uint32_t sum_sxr, int count,
+static double similarity(uint64_t sum_s, uint64_t sum_r, uint64_t sum_sq_s,
+                         uint64_t sum_sq_r, uint64_t sum_sxr, int count,
                          uint32_t bd) {
   double ssim_n, ssim_d;
   int64_t c1, c2;
@@ -90,12 +90,12 @@ static double similarity(uint32_t sum_s, uint32_t sum_r, uint32_t sum_sq_s,
     assert(0);
   }
 
-  ssim_n = (2.0 * sum_s * sum_r + c1) *
-           (2.0 * count * sum_sxr - 2.0 * sum_s * sum_r + c2);
+  ssim_n = (double)(2 * sum_s * sum_r + c1) *
+           (2 * count * sum_sxr - 2 * sum_s * sum_r + c2);
 
-  ssim_d = ((double)sum_s * sum_s + (double)sum_r * sum_r + c1) *
-           ((double)count * sum_sq_s - (double)sum_s * sum_s +
-            (double)count * sum_sq_r - (double)sum_r * sum_r + c2);
+  ssim_d = (double)(sum_s * sum_s + sum_r * sum_r + c1) *
+           (count * sum_sq_s - sum_s * sum_s +
+            count * sum_sq_r - sum_r * sum_r + c2);
 
   return ssim_n / ssim_d;
 }
